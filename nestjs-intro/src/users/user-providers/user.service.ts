@@ -1,8 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { AuthService } from 'src/auth/providers/auth.service';
 
 @Injectable()
 export class UserService {
-  findAll(limit: number, page: number) {
+  constructor(
+    // circular dependency  UserService <=> AuthService
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
+
+  findAll(limit?: number, page?: number) {
     console.log(limit, page);
     return [{ firsName: 'john', email: 'example@mail.com' }];
   }
