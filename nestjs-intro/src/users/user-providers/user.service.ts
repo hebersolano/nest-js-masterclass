@@ -13,4 +13,9 @@ export class UserService {
     console.log(limit, page);
     return [{ firsName: 'john', email: 'example@mail.com' }];
   }
+
+  findOneById(id: number) {
+    if (this.authService.isAuth()) console.log('user is authenticated');
+    return { id, name: 'Heber', email: 'example@mail.com' };
+  }
 }

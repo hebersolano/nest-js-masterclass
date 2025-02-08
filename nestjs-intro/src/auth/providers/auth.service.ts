@@ -9,10 +9,11 @@ export class AuthService {
     private readonly usersService: UserService,
   ) {}
 
-  login(email: string, password: string, id: string) {
+  login(email: string, password: string, id?: string) {
     console.log(email, password, id);
     // check user exists database
-    const user = this.usersService.findAll();
+    const user = this.usersService.findOneById(1);
+    console.log('>>> login user', user);
     // login
     // token
     return user;
