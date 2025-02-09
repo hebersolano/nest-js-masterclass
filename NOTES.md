@@ -6,6 +6,7 @@
 - [class-validator](https://github.com/typestack/class-validator)
 - [class-transformer](https://www.npmjs.com/package/class-transformer)
 - [nestjs mapped-types](https://github.com/nestjs/mapped-types)
+- [nestjs swagger](https://docs.nestjs.com/openapi/introduction)
 
 # NestJS Docs
 
