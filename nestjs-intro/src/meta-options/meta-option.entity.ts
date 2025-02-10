@@ -12,7 +12,7 @@ export class MetaOption {
   id: number;
 
   @Column({ type: 'json', nullable: false })
-  metaValue: string;
+  metaValue: JSON;
 
   @CreateDateColumn()
   createDate: Date;
