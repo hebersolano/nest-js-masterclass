@@ -11,11 +11,12 @@ export class CreateUserDto {
   @IsNotEmpty()
   firstName: string;
 
-  @Length(3, 96)
+  @Length(1, 96)
   @IsOptional()
   lastName?: string;
 
   @IsEmail()
+  @Length(1, 96)
   @IsNotEmpty()
   email: string;
 
@@ -23,7 +24,7 @@ export class CreateUserDto {
     message:
       'Minimum eight characters, at least one letter, one number and one special character',
   })
-  @Length(8)
+  @Length(8, 96)
   @IsNotEmpty()
   password: string;
 }

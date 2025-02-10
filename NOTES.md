@@ -7,6 +7,10 @@
 - [class-transformer](https://www.npmjs.com/package/class-transformer)
 - [nestjs mapped-types](https://github.com/nestjs/mapped-types)
 - [nestjs swagger](https://docs.nestjs.com/openapi/introduction)
+- [TypeORM](https://typeorm.io/)
+  - [TypeORM package](https://github.com/typeorm/typeorm)
+  - [@nestjs/typeorm](https://github.com/nestjs/typeorm#readme)
+  - PostgreSQL driver `npm install pg --save`
 
 # NestJS Docs
 
