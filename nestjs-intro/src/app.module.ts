@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { UserModule } from './users/user.module';
+import { TagsModule } from './tags/tags.module';
+import { MetaOptionsModule } from './meta-options/meta-options.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { UserModule } from './users/user.module';
     PostsModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmOptions),
+    TagsModule,
+    MetaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

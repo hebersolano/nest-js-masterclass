@@ -11,36 +11,16 @@ import {
   IsUrl,
   Length,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
-
-enum PostType {
-  post = 'post',
-  page = 'page',
-  story = 'story',
-  series = 'series',
-}
-
-enum Status {
-  draft = 'draft',
-  schedule = 'schedule',
-  review = 'review',
-  published = 'published',
-}
-
-export class CreatePostMetaOptionsDto {
-  @IsString()
-  @IsNotEmpty()
-  key: string;
-
-  @IsNotEmpty()
-  value: any;
-}
+import { PostType, Status } from '../posts-types/create-post.enum';
+import { MetaOptionsDto } from 'src/meta-options/meta-options.dto';
 
 export class CreatePostDto {
   @ApiProperty({ description: 'Title for the post', example: 'Example title' })
-  @Length(4)
+  @Length(3, 512)
   @IsNotEmpty()
   title: string;
 
@@ -57,7 +37,7 @@ export class CreatePostDto {
   @Matches(/^[a-z09]+(?:-[a-z0-9]+)*$/, {
     message: 'Only lowercase letters and hyphens ("-") are allowed.',
   })
-  @IsString()
+  @Length(3, 256)
   @IsNotEmpty()
   slug: string;
 
@@ -82,6 +62,7 @@ export class CreatePostDto {
   schema?: string;
 
   @ApiPropertyOptional()
+  @MaxLength(1024)
   @IsUrl()
   @IsOptional()
   featuredImageUrl?: string;
@@ -111,9 +92,9 @@ export class CreatePostDto {
       },
     },
   })
-  @Type(() => CreatePostMetaOptionsDto)
+  @Type(() => MetaOptionsDto)
   @ValidateNested()
   @IsArray()
   @IsOptional()
-  metaOptions?: CreatePostMetaOptionsDto[];
+  metaOptions?: MetaOptionsDto[];
 }

@@ -11,6 +11,7 @@
   - [TypeORM package](https://github.com/typeorm/typeorm)
   - [@nestjs/typeorm](https://github.com/nestjs/typeorm#readme)
   - PostgreSQL driver `npm install pg --save`
+  - [PostgresSQL Docs](https://www.postgresql.org/docs/17/index.html)
 
 # NestJS Docs
 
