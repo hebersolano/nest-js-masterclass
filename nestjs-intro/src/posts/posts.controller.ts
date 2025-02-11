@@ -27,9 +27,9 @@ export class PostsController {
     description: 'Get a 201 response if post created successfully',
   })
   @Post()
-  createPost(@Body() createPostDto: CreatePostDto) {
+  async createPost(@Body() createPostDto: CreatePostDto) {
     console.log('>>> create post body', createPostDto);
-    return createPostDto;
+    return this.postsService.create(createPostDto);
   }
 
   @ApiOperation({ summary: 'Updates an existing blog post' })

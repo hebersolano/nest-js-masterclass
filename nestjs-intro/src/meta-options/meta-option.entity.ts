@@ -9,13 +9,13 @@ import {
 @Entity()
 export class MetaOption {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ type: 'json', nullable: false })
-  metaValue: JSON;
+  metaValue: string;
 
   @CreateDateColumn()
-  createDate: Date;
+  createDate?: Date;
   @UpdateDateColumn()
-  updateDate: Date;
+  updateDate?: Date;
 }

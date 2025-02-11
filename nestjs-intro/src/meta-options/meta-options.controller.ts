@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { GetMetaOptionParamsDto } from './meta-options-dtos/get-meta-option.dto';
-import { MetaOptionsDto } from './meta-options-dtos/meta-options.dto';
 import { MetaOptionsService } from './meta-options-providers/meta-options.service';
+import { CreateMetaOptionDto } from './meta-options-dtos/meta-options.dto';
 
 @Controller('meta-options')
 export class MetaOptionsController {
@@ -13,7 +13,7 @@ export class MetaOptionsController {
   }
 
   @Post()
-  async createMetaOption(@Body() metaOptionsDto: MetaOptionsDto) {
-    await this.metaOptionsService.create(metaOptionsDto);
+  async createMetaOption(@Body() CreateMetaOptionDto: CreateMetaOptionDto) {
+    await this.metaOptionsService.create(CreateMetaOptionDto);
   }
 }

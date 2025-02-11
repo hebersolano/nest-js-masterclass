@@ -15,8 +15,8 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { CreateMetaOptionDto } from 'src/meta-options/meta-options-dtos/meta-options.dto';
 import { PostType, Status } from '../posts-types/create-post.enum';
-import { MetaOptionsDto } from 'src/meta-options/meta-options.dto';
 
 export class CreatePostDto {
   @ApiProperty({ description: 'Title for the post', example: 'Example title' })
@@ -82,19 +82,17 @@ export class CreatePostDto {
   tags?: string[];
 
   @ApiPropertyOptional({
-    type: 'array',
-    required: false,
-    items: {
-      type: 'object',
-      properties: {
-        key: { type: 'string' },
-        value: { type: 'any', example: true },
+    type: 'object',
+    properties: {
+      metaValue: {
+        type: 'string',
+        description: 'JSON string',
+        example: '{\n  "sidebarEnable": true \n}',
       },
     },
   })
-  @Type(() => MetaOptionsDto)
+  @Type(() => CreateMetaOptionDto)
   @ValidateNested()
-  @IsArray()
   @IsOptional()
-  metaOptions?: MetaOptionsDto[];
+  metaOptions?: CreateMetaOptionDto | undefined;
 }

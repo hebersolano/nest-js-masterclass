@@ -65,7 +65,7 @@ export class Post {
   featuredImageUrl?: string;
 
   @Column({
-    type: 'timestamptz', // "datetime" in mysql
+    type: 'timestamp', // "datetime" in mysql
     nullable: true,
   })
   publishOn?: Date;
@@ -77,7 +77,9 @@ export class Post {
   }) // relationship
   tags?: string[];
 
-  @OneToOne(() => MetaOption)
+  @OneToOne(() => MetaOption, {
+    cascade: true,
+  })
   @JoinColumn()
   metaOptions?: MetaOption;
 }
