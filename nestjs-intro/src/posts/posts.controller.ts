@@ -49,8 +49,9 @@ export class PostsController {
     description: '200 response if post is updated successfully',
   })
   @Patch()
-  updatePost(@Body() updatePostDto: UpdatePostDto) {
-    return updatePostDto;
+  async updatePost(@Body() updatePostDto: UpdatePostDto) {
+    console.log('>>> update post body', updatePostDto);
+    return await this.postsService.update(updatePostDto);
   }
 
   @Delete()

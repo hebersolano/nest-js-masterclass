@@ -52,4 +52,8 @@ export class UserService {
 
     return newUser;
   }
+
+  async exists(id: number) {
+    return await this.userRepository.existsBy({ id });
+  }
 }

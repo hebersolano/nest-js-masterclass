@@ -3,12 +3,15 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostType, Status } from '../posts-types/create-post.enum';
 import { User } from 'src/users/user.entity';
+import { Tag } from 'src/tags/tags-entities/tag.entity';
 
 @Entity()
 export class Post {
@@ -72,12 +75,9 @@ export class Post {
   })
   publishOn?: Date;
 
-  @Column({
-    type: 'text',
-    array: true,
-    nullable: true,
-  }) // relationship
-  tags?: string[];
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags?: Tag[];
 
   @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
     cascade: true,

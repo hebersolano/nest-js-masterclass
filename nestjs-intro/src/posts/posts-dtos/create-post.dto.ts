@@ -13,7 +13,6 @@ import {
   Length,
   Matches,
   MaxLength,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { CreateMetaOptionDto } from 'src/meta-options/meta-options-dtos/meta-options.dto';
@@ -75,12 +74,11 @@ export class CreatePostDto {
   @IsOptional()
   publishOn?: Date;
 
-  @ApiPropertyOptional({ example: ['tag01', 'tag02'] })
-  @MinLength(3, { each: true })
-  @IsString({ each: true })
+  @ApiPropertyOptional({ example: [1, 2] })
+  @IsInt({ each: true })
   @IsArray()
   @IsOptional()
-  tags?: string[];
+  tags?: number[];
 
   @ApiPropertyOptional({
     type: 'object',
