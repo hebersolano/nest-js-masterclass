@@ -28,4 +28,8 @@ export class MetaOptionsService {
     newMetaOption = await this.metaOptionRepository.save(newMetaOption);
     return newMetaOption;
   }
+
+  async delete(id: number) {
+    return await this.metaOptionRepository.delete(id);
+  }
 }

@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostType, Status } from '../posts-types/create-post.enum';
+import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Post {
@@ -77,9 +79,14 @@ export class Post {
   }) // relationship
   tags?: string[];
 
-  @OneToOne(() => MetaOption, {
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
     cascade: true,
+    eager: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  author: User;
 }

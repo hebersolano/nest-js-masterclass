@@ -1,9 +1,9 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { Repository } from 'typeorm';
-import { User } from '../user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../user-dtos/create-user.dto';
+import { User } from '../user.entity';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -31,9 +31,8 @@ export class UserService {
   /**
    * Find a single user by id
    */
-  findOneById(id: number) {
-    if (this.authService.isAuth()) console.log('user is authenticated');
-    return { id, name: 'Heber', email: 'example@mail.com' };
+  async findOneById(id: number) {
+    return await this.userRepository.findOneBy({ id });
   }
 
   async createUser(createUserDto: CreateUserDto) {
