@@ -1,10 +1,17 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/providers/auth.service';
+import profileConfig from 'src/config/profile.config';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../user-dtos/create-user.dto';
 import { User } from '../user.entity';
-import { ConfigService } from '@nestjs/config';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -20,44 +27,78 @@ export class UserService {
     // injecting userRepository
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
 
   /**
    * Method to get all the users from the database
    */
-  findAll(limit?: number, page?: number) {
-    const env = this.configService.get<string>('S3_BUCKET');
-    console.log('>>> env config', env);
-    console.log(limit, page);
-    return [{ firsName: 'john', email: 'example@mail.com' }];
+  async findAll(limit?: number, page?: number) {
+    try {
+      return await this.userRepository.find();
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process request at the moment, please try later',
+        { description: 'Database connection error' },
+      );
+    }
   }
 
   /**
    * Find a single user by id
    */
   async findOneById(id: number) {
-    return await this.userRepository.findOneBy({ id });
+    let user: User | null = null;
+    try {
+      user = await this.userRepository.findOneBy({ id });
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process request at the moment, please try later',
+        { description: 'Database connection error' },
+      );
+    }
+    if (!user) throw new BadRequestException('User does not exists');
+    return user;
   }
 
   async createUser(createUserDto: CreateUserDto) {
     // Check if user exist
-    const existingUser = await this.userRepository.findOne({
-      where: {
+    let userExists: boolean = false;
+    try {
+      userExists = await this.userRepository.existsBy({
         email: createUserDto.email,
-      },
-    });
-
-    console.log('>>> existing user', existingUser);
-    // Handle exceptions
+      });
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process request at the moment, please try later',
+        { description: 'Database connection error' },
+      );
+    }
+    if (userExists) throw new BadRequestException('User already exists');
 
     // Create a new user
-    let newUser = this.userRepository.create(createUserDto);
-    newUser = await this.userRepository.save(newUser);
-
-    return newUser;
+    try {
+      let newUser = this.userRepository.create(createUserDto);
+      newUser = await this.userRepository.save(newUser);
+      return newUser;
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process request at the moment, please try later',
+        { description: 'Database connection error' },
+      );
+    }
   }
 
   async exists(id: number) {
-    return await this.userRepository.existsBy({ id });
+    try {
+      return await this.userRepository.existsBy({ id });
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process request at the moment, please try later',
+        { description: 'Database connection error' },
+      );
+    }
   }
 }

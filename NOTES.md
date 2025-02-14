@@ -7,6 +7,7 @@
 - [class-transformer](https://www.npmjs.com/package/class-transformer)
 - [nestjs mapped-types](https://github.com/nestjs/mapped-types)
 - [nestjs swagger](https://docs.nestjs.com/openapi/introduction)
+- [nestjs config module](https://docs.nestjs.com/techniques/configuration): `npm i --save @nestjs/config`
 - [TypeORM](https://typeorm.io/)
   - [TypeORM package](https://github.com/typeorm/typeorm)
   - [@nestjs/typeorm](https://github.com/nestjs/typeorm#readme)
@@ -32,3 +33,7 @@ Response
 
 - Validation
 - Transformation
+
+## Exceptions
+
+- [Built-in HTTP exceptions](https://docs.nestjs.com/exception-filters#built-in-http-exceptions)

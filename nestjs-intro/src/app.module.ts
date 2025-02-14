@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { typeOrmOptions } from './config/type-orm-module.config';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
+import envValidation from './config/env.validation';
 
 const ENV = process.env.NODE_ENV;
 
@@ -22,6 +23,7 @@ const ENV = process.env.NODE_ENV;
       isGlobal: true,
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       load: [appConfig, databaseConfig],
+      validationSchema: envValidation,
     }),
     TypeOrmModule.forRootAsync(typeOrmOptions),
     UserModule,
