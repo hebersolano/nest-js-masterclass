@@ -1,8 +1,10 @@
+import { Post } from 'src/posts/post-entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,6 +47,9 @@ export class Tag {
     nullable: true,
   })
   featureImageUrl?: string;
+
+  @ManyToMany(() => Post, (post) => post.tags, { onDelete: 'CASCADE' })
+  posts: Post[];
 
   // Special columns https://typeorm.io/entities#special-columns
   @CreateDateColumn()

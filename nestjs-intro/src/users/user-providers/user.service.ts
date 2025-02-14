@@ -4,6 +4,7 @@ import { AuthService } from 'src/auth/providers/auth.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../user-dtos/create-user.dto';
 import { User } from '../user.entity';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -11,6 +12,7 @@ import { User } from '../user.entity';
 @Injectable()
 export class UserService {
   constructor(
+    private readonly configService: ConfigService,
     // circular dependency  UserService <=> AuthService
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
@@ -24,6 +26,8 @@ export class UserService {
    * Method to get all the users from the database
    */
   findAll(limit?: number, page?: number) {
+    const env = this.configService.get<string>('S3_BUCKET');
+    console.log('>>> env config', env);
     console.log(limit, page);
     return [{ firsName: 'john', email: 'example@mail.com' }];
   }

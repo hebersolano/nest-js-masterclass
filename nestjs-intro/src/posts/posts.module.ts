@@ -5,10 +5,15 @@ import { UserModule } from 'src/users/user.module';
 import { Post } from './post-entities/post.entity';
 import { PostsService } from './posts-providers/posts.service';
 import { PostsController } from './posts.controller';
+import { TagsModule } from 'src/tags/tags.module';
 
 @Module({
   providers: [PostsService],
   controllers: [PostsController],
-  imports: [UserModule, TypeOrmModule.forFeature([Post, MetaOption])],
+  imports: [
+    UserModule,
+    TagsModule,
+    TypeOrmModule.forFeature([Post, MetaOption]),
+  ],
 })
 export class PostsModule {}

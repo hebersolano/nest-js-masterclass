@@ -6,11 +6,16 @@ import { Repository } from 'typeorm';
 import { Post } from '../post-entities/post.entity';
 import { CreatePostDto } from '../posts-dtos/create-post.dto';
 import { UpdatePostDto } from '../posts-dtos/update-post.dto';
+import { TagsService } from 'src/tags/tags-providers/tags.service';
+import { HelpersService } from 'src/helpers/helpers-providers/helpers.service';
+import { Tag } from 'src/tags/tags-entities/tag.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
     private readonly usersService: UserService,
+    private readonly tagsService: TagsService,
+    private readonly helpersService: HelpersService,
 
     // Repositories
     @InjectRepository(Post)
@@ -67,34 +72,34 @@ export class PostsService {
   }
 
   async update(updatePostDto: UpdatePostDto) {
-    const { id: postId } = updatePostDto;
-    const fieldsToUpdate = {
-      ...updatePostDto,
-      id: undefined,
-      tags: undefined,
-      author: undefined,
-      authorId: undefined,
-      metaOptions: undefined,
-    };
-    //check weather post and tags exist
-    // update post
-    await this.postRepository
-      .createQueryBuilder()
-      .update()
-      .set(fieldsToUpdate)
-      .where('id = :id', { id: postId })
-      .execute();
-    console.log(updatePostDto);
+    // find post
+    let post = await this.postRepository.findOne({
+      where: { id: updatePostDto.id },
+    });
+    if (!post) throw new Error('Post not found');
 
-    await this.postRepository
-      .createQueryBuilder()
-      .relation('tags')
-      .of(postId)
-      .add(updatePostDto.tags);
+    // update the properties
+    post = this.helpersService.updateObjectFromSource<Post>(
+      post,
+      updatePostDto,
+      ['id', 'tags', 'metaOptions', 'author'],
+    );
+
+    let tags: Tag[] = [];
+    if (updatePostDto.tags) {
+      // find tags
+      if (updatePostDto.tags.length > 0)
+        tags = await this.tagsService.findMultipleTags(updatePostDto.tags);
+      // assign new tags
+      post.tags = tags;
+    }
+
+    // save post
+    const updatedPost = await this.postRepository.save(post);
 
     return {
       ok: true,
-      id: postId,
+      result: updatedPost,
     };
   }
 

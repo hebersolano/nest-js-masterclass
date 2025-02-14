@@ -13,7 +13,7 @@ export class MetaOption {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({ type: 'json', nullable: false })
+  @Column({ type: 'simple-json', nullable: false })
   metaValue: string;
 
   @CreateDateColumn()
