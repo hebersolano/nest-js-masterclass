@@ -1,4 +1,4 @@
-import { MetaOption } from 'src/meta-options/meta-option.entity';
+import { MetaOption } from "src/meta-options/meta-option.entity";
 import {
   Column,
   Entity,
@@ -8,10 +8,10 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { PostType, Status } from '../posts-types/create-post.enum';
-import { User } from 'src/users/user.entity';
-import { Tag } from 'src/tags/tags-entities/tag.entity';
+} from "typeorm";
+import { PostType, Status } from "../posts-types/create-post.enum";
+import { User } from "src/users/user.entity";
+import { Tag } from "src/tags/tags-entities/tag.entity";
 
 @Entity()
 export class Post {
@@ -19,7 +19,7 @@ export class Post {
   id: number;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 512,
     unique: true,
     nullable: false,
@@ -27,7 +27,7 @@ export class Post {
   title: string;
 
   @Column({
-    type: 'enum',
+    type: "enum",
     enum: PostType,
     default: PostType.post,
     nullable: false,
@@ -35,7 +35,7 @@ export class Post {
   postType: PostType;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 256,
     unique: true,
     nullable: false,
@@ -43,7 +43,7 @@ export class Post {
   slug: string;
 
   @Column({
-    type: 'enum',
+    type: "enum",
     enum: Status,
     default: Status.draft,
     nullable: false,
@@ -51,26 +51,26 @@ export class Post {
   status: Status;
 
   @Column({
-    type: 'text',
+    type: "text",
     nullable: true,
   })
   content?: string;
 
   @Column({
-    type: 'text',
+    type: "text",
     nullable: true,
   })
   schema?: string;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 1024,
     nullable: true,
   })
   featuredImageUrl?: string;
 
   @Column({
-    type: 'timestamp', // "datetime" in mysql
+    type: "timestamp", // "datetime" in mysql
     nullable: true,
   })
   publishOn?: Date;
@@ -82,7 +82,7 @@ export class Post {
   @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
     cascade: true,
     eager: true,
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   @JoinColumn()
   metaOptions?: MetaOption;

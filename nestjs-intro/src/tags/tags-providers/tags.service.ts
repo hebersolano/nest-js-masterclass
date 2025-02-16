@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { In, Repository } from 'typeorm';
-import { Tag } from '../tags-entities/tag.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTagDto } from '../tags-dtos/create-tag.dto';
+import { Injectable, RequestTimeoutException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Repository } from "typeorm";
+import { CreateTagDto } from "../tags-dtos/create-tag.dto";
+import { Tag } from "../tags-entities/tag.entity";
 
 @Injectable()
 export class TagsService {
@@ -15,8 +15,16 @@ export class TagsService {
     return await this.tagRepository.find();
   }
 
-  async findMultipleTags(tags: number[]) {
-    return await this.tagRepository.findBy({ id: In(tags) });
+  async findMultipleTags(ids: number[]) {
+    try {
+      return await this.tagRepository.findBy({ id: In(ids) });
+    } catch (error) {
+      console.error(">>> Error find multiple tags service", error);
+      throw new RequestTimeoutException(
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
+      );
+    }
   }
 
   async create(createTagDto: CreateTagDto) {

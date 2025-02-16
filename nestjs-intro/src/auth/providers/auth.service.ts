@@ -1,5 +1,5 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { UserService } from 'src/users/user-providers/user.service';
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { UserService } from "src/users/user-providers/user.service";
 
 @Injectable()
 export class AuthService {
@@ -13,7 +13,7 @@ export class AuthService {
     console.log(email, password, id);
     // check user exists database
     const user = this.usersService.findOneById(1);
-    console.log('>>> login user', user);
+    console.log(">>> login user", user);
     // login
     // token
     return user;

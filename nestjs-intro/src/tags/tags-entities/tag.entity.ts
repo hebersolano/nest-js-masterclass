@@ -1,4 +1,4 @@
-import { Post } from 'src/posts/post-entities/post.entity';
+import { Post } from "src/posts/post-entities/post.entity";
 import {
   Column,
   CreateDateColumn,
@@ -7,7 +7,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class Tag {
@@ -15,7 +15,7 @@ export class Tag {
   id: number;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 256,
     nullable: false,
     unique: true,
@@ -23,7 +23,7 @@ export class Tag {
   name: string;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 256,
     nullable: false,
     unique: true,
@@ -31,24 +31,24 @@ export class Tag {
   slug: string;
 
   @Column({
-    type: 'text',
+    type: "text",
     nullable: true,
   })
   description?: string;
 
   @Column({
-    type: 'text',
+    type: "text",
     nullable: true,
   })
   schema?: string;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     nullable: true,
   })
   featureImageUrl?: string;
 
-  @ManyToMany(() => Post, (post) => post.tags, { onDelete: 'CASCADE' })
+  @ManyToMany(() => Post, (post) => post.tags, { onDelete: "CASCADE" })
   posts: Post[];
 
   // Special columns https://typeorm.io/entities#special-columns

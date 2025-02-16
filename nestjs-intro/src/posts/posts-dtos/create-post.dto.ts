@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsDateString,
@@ -14,12 +14,12 @@ import {
   Matches,
   MaxLength,
   ValidateNested,
-} from 'class-validator';
-import { CreateMetaOptionDto } from 'src/meta-options/meta-options-dtos/meta-options.dto';
-import { PostType, Status } from '../posts-types/create-post.enum';
+} from "class-validator";
+import { CreateMetaOptionDto } from "src/meta-options/meta-options-dtos/meta-options.dto";
+import { PostType, Status } from "../posts-types/create-post.enum";
 
 export class CreatePostDto {
-  @ApiProperty({ description: 'Title for the post', example: 'Example title' })
+  @ApiProperty({ description: "Title for the post", example: "Example title" })
   @Length(3, 512)
   @IsNotEmpty()
   title: string;
@@ -32,7 +32,7 @@ export class CreatePostDto {
   postType: PostType;
 
   @ApiProperty({
-    example: 'my-post',
+    example: "my-post",
   })
   @Matches(/^[a-z09]+(?:-[a-z0-9]+)*$/, {
     message: 'Only lowercase letters and hyphens ("-") are allowed.',
@@ -47,14 +47,14 @@ export class CreatePostDto {
   status: Status;
 
   @ApiPropertyOptional({
-    description: 'Content of the post',
+    description: "Content of the post",
   })
   @IsString()
   @IsOptional()
   content?: string;
 
   @ApiPropertyOptional({
-    description: 'Serialize your JSON object',
+    description: "Serialize your JSON object",
     example: '{\n  "key": "value" \n}',
   })
   @IsJSON()
@@ -68,7 +68,7 @@ export class CreatePostDto {
   featuredImageUrl?: string;
 
   @ApiPropertyOptional({
-    example: '2025-02-08T14:57:22.251Z',
+    example: "2025-02-08T14:57:22.251Z",
   })
   @IsDateString()
   @IsOptional()
@@ -81,11 +81,11 @@ export class CreatePostDto {
   tags?: number[];
 
   @ApiPropertyOptional({
-    type: 'object',
+    type: "object",
     properties: {
       metaValue: {
-        type: 'string',
-        description: 'JSON string',
+        type: "string",
+        description: "JSON string",
         example: '{\n  "sidebarEnable": true \n}',
       },
     },
@@ -96,7 +96,7 @@ export class CreatePostDto {
   metaOptions?: CreateMetaOptionDto | undefined;
 
   @ApiProperty({
-    type: 'integer',
+    type: "integer",
     required: true,
     example: 1,
   })

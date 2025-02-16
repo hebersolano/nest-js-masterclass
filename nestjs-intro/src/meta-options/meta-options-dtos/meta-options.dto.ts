@@ -1,4 +1,4 @@
-import { IsJSON, IsNotEmpty } from 'class-validator';
+import { IsJSON, IsNotEmpty } from "class-validator";
 
 export class CreateMetaOptionDto {
   @IsJSON()

@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { MetaOptionsController } from './meta-options.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { MetaOption } from './meta-option.entity';
-import { MetaOptionsService } from './meta-options-providers/meta-options.service';
+import { Module } from "@nestjs/common";
+import { MetaOptionsController } from "./meta-options.controller";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { MetaOption } from "./meta-option.entity";
+import { MetaOptionsService } from "./meta-options-providers/meta-options.service";
 
 @Module({
   controllers: [MetaOptionsController],

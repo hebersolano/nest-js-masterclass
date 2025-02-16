@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   IsJSON,
   IsNotEmpty,
@@ -8,7 +8,7 @@ import {
   Length,
   Matches,
   MaxLength,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateTagDto {
   @ApiProperty()

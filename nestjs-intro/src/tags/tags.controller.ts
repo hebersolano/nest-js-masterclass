@@ -6,11 +6,11 @@ import {
   ParseIntPipe,
   Post,
   Query,
-} from '@nestjs/common';
-import { CreateTagDto } from './tags-dtos/create-tag.dto';
-import { TagsService } from './tags-providers/tags.service';
+} from "@nestjs/common";
+import { CreateTagDto } from "./tags-dtos/create-tag.dto";
+import { TagsService } from "./tags-providers/tags.service";
 
-@Controller('tags')
+@Controller("tags")
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
@@ -25,12 +25,12 @@ export class TagsController {
   }
 
   @Delete()
-  async softDeleteTag(@Query('id', ParseIntPipe) id: number) {
+  async softDeleteTag(@Query("id", ParseIntPipe) id: number) {
     await this.tagsService.softDelete(id);
   }
 
-  @Delete('hard-delete')
-  async deleteTag(@Query('id', ParseIntPipe) id: number) {
+  @Delete("hard-delete")
+  async deleteTag(@Query("id", ParseIntPipe) id: number) {
     await this.tagsService.delete(id);
   }
 }

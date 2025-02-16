@@ -7,16 +7,16 @@ import {
   ParseIntPipe,
   Post,
   Query,
-} from '@nestjs/common';
-import { GetMetaOptionParamsDto } from './meta-options-dtos/get-meta-option.dto';
-import { MetaOptionsService } from './meta-options-providers/meta-options.service';
-import { CreateMetaOptionDto } from './meta-options-dtos/meta-options.dto';
+} from "@nestjs/common";
+import { GetMetaOptionParamsDto } from "./meta-options-dtos/get-meta-option.dto";
+import { MetaOptionsService } from "./meta-options-providers/meta-options.service";
+import { CreateMetaOptionDto } from "./meta-options-dtos/meta-options.dto";
 
-@Controller('meta-options')
+@Controller("meta-options")
 export class MetaOptionsController {
   constructor(private readonly metaOptionsService: MetaOptionsService) {}
 
-  @Get(':id')
+  @Get(":id")
   getMetaOption(@Param() params: GetMetaOptionParamsDto) {
     return this.metaOptionsService.findOne(params.id);
   }
@@ -27,7 +27,7 @@ export class MetaOptionsController {
   }
 
   @Delete()
-  async deleteMetaOption(@Query('id', ParseIntPipe) id: number) {
+  async deleteMetaOption(@Query("id", ParseIntPipe) id: number) {
     return await this.metaOptionsService.delete(id);
   }
 }

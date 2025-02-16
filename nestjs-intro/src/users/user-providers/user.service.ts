@@ -4,14 +4,14 @@ import {
   Inject,
   Injectable,
   RequestTimeoutException,
-} from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AuthService } from 'src/auth/providers/auth.service';
-import profileConfig from 'src/config/profile.config';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from '../user-dtos/create-user.dto';
-import { User } from '../user.entity';
+} from "@nestjs/common";
+import { ConfigService, ConfigType } from "@nestjs/config";
+import { InjectRepository } from "@nestjs/typeorm";
+import { AuthService } from "src/auth/providers/auth.service";
+import profileConfig from "src/config/profile.config";
+import { DataSource, Repository } from "typeorm";
+import { CreateUserDto } from "../user-dtos/create-user.dto";
+import { User } from "../user.entity";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -19,7 +19,6 @@ import { User } from '../user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    private readonly configService: ConfigService,
     // circular dependency  UserService <=> AuthService
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
@@ -27,8 +26,11 @@ export class UserService {
     // injecting userRepository
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly dataSource: DataSource,
 
-    @Inject(profileConfig.KEY)
+    // configuration modules
+    private readonly configService: ConfigService,
+    @Inject(profileConfig.KEY) // custom config module
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
 
@@ -36,12 +38,14 @@ export class UserService {
    * Method to get all the users from the database
    */
   async findAll(limit?: number, page?: number) {
+    console.log(limit, page);
     try {
       return await this.userRepository.find();
-    } catch {
+    } catch (error) {
+      console.error(">>> Error user service findAll", error);
       throw new RequestTimeoutException(
-        'Unable to process request at the moment, please try later',
-        { description: 'Database connection error' },
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
       );
     }
   }
@@ -53,17 +57,18 @@ export class UserService {
     let user: User | null = null;
     try {
       user = await this.userRepository.findOneBy({ id });
-    } catch {
+    } catch (error) {
+      console.error(">>> Error user service findOneById", error, id);
       throw new RequestTimeoutException(
-        'Unable to process request at the moment, please try later',
-        { description: 'Database connection error' },
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
       );
     }
-    if (!user) throw new BadRequestException('User does not exists');
+    if (!user) throw new BadRequestException("User does not exists");
     return user;
   }
 
-  async createUser(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     // Check if user exist
     let userExists: boolean = false;
     try {
@@ -72,11 +77,11 @@ export class UserService {
       });
     } catch {
       throw new RequestTimeoutException(
-        'Unable to process request at the moment, please try later',
-        { description: 'Database connection error' },
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
       );
     }
-    if (userExists) throw new BadRequestException('User already exists');
+    if (userExists) throw new BadRequestException("User already exists");
 
     // Create a new user
     try {
@@ -85,9 +90,35 @@ export class UserService {
       return newUser;
     } catch {
       throw new RequestTimeoutException(
-        'Unable to process request at the moment, please try later',
-        { description: 'Database connection error' },
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
       );
+    }
+  }
+
+  async createMany(createUsersDto: CreateUserDto[]) {
+    const newUsers: User[] = [];
+
+    // create query runner instance
+    const queryRunner = this.dataSource.createQueryRunner();
+    // connect query runner to db
+    await queryRunner.connect();
+    // start transaction
+    await queryRunner.startTransaction();
+    try {
+      for (const user of createUsersDto) {
+        const newUser = queryRunner.manager.create(User, user);
+        const result = await queryRunner.manager.save(newUser);
+        newUsers.push(result);
+      }
+      // if successful commit transaction
+      await queryRunner.commitTransaction();
+    } catch {
+      // if unsuccessful rollback transaction
+      await queryRunner.rollbackTransaction();
+    } finally {
+      // release connection
+      await queryRunner.release();
     }
   }
 
@@ -96,8 +127,8 @@ export class UserService {
       return await this.userRepository.existsBy({ id });
     } catch {
       throw new RequestTimeoutException(
-        'Unable to process request at the moment, please try later',
-        { description: 'Database connection error' },
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
       );
     }
   }
