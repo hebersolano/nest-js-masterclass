@@ -4,6 +4,7 @@ import {
   DefaultValuePipe,
   Get,
   Param,
+  ParseArrayPipe,
   ParseIntPipe,
   Patch,
   Post,
@@ -62,6 +63,14 @@ export class UserController {
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
+  }
+
+  @Post("create-many")
+  async createManyUsers(
+    @Body(new ParseArrayPipe({ items: CreateUserDto }))
+    createUsersDto: CreateUserDto[],
+  ) {
+    return await this.userService.createMany(createUsersDto);
   }
 
   @Patch()

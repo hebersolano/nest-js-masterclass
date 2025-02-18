@@ -12,6 +12,7 @@ import profileConfig from "src/config/profile.config";
 import { DataSource, Repository } from "typeorm";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
+import { UsersCreateManyProvider } from "./users-create-many.provider";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -32,6 +33,9 @@ export class UserService {
     private readonly configService: ConfigService,
     @Inject(profileConfig.KEY) // custom config module
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+
+    // userCreateManyProvider
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   /**
@@ -97,29 +101,7 @@ export class UserService {
   }
 
   async createMany(createUsersDto: CreateUserDto[]) {
-    const newUsers: User[] = [];
-
-    // create query runner instance
-    const queryRunner = this.dataSource.createQueryRunner();
-    // connect query runner to db
-    await queryRunner.connect();
-    // start transaction
-    await queryRunner.startTransaction();
-    try {
-      for (const user of createUsersDto) {
-        const newUser = queryRunner.manager.create(User, user);
-        const result = await queryRunner.manager.save(newUser);
-        newUsers.push(result);
-      }
-      // if successful commit transaction
-      await queryRunner.commitTransaction();
-    } catch {
-      // if unsuccessful rollback transaction
-      await queryRunner.rollbackTransaction();
-    } finally {
-      // release connection
-      await queryRunner.release();
-    }
+    return await this.usersCreateManyProvider.createMany(createUsersDto);
   }
 
   async exists(id: number) {
