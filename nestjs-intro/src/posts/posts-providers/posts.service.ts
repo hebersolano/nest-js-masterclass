@@ -13,6 +13,8 @@ import { Repository } from "typeorm";
 import { Post } from "../post-entities/post.entity";
 import { CreatePostDto } from "../posts-dtos/create-post.dto";
 import { UpdatePostDto } from "../posts-dtos/update-post.dto";
+import { GetPostsQueryDto } from "../posts-dtos/get-posts.dto";
+import { PaginationProvider } from "src/common/pagination/pagination.provider";
 
 @Injectable()
 export class PostsService {
@@ -20,6 +22,7 @@ export class PostsService {
     private readonly usersService: UserService,
     private readonly tagsService: TagsService,
     private readonly helpersService: HelpersService,
+    private readonly paginationProvider: PaginationProvider,
 
     // Repositories
     @InjectRepository(Post)
@@ -28,8 +31,11 @@ export class PostsService {
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
 
-  async findAll() {
-    await this.postRepository.find({});
+  async findAll(getPostsQuery: GetPostsQueryDto) {
+    return await this.paginationProvider.paginateQuery(
+      getPostsQuery,
+      this.postRepository,
+    );
   }
 
   async findOne(id: number) {
@@ -53,11 +59,11 @@ export class PostsService {
     if (createPostDto.tags && createPostDto.tags.length > 0) {
       const tags = await this.tagsService.findMultipleTags(createPostDto.tags);
       if (createPostDto.tags.length !== tags.length) {
-        const tagsNotFound = createPostDto.tags.filter(
-          (id, i) => id !== tags[i].id,
+        const tagsNotFound = createPostDto.tags.filter((id, i) =>
+          tags[i] && id === tags[i].id ? false : true,
         );
         throw new BadRequestException(
-          "Tags doesn't exist " + tagsNotFound.toString(),
+          "Tags doesn't exist: [" + tagsNotFound.toString() + "]",
         );
       }
       newPost.tags = tags;

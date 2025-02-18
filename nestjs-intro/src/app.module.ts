@@ -11,6 +11,7 @@ import { MetaOptionsModule } from "./meta-options/meta-options.module";
 import { HelpersModule } from "./helpers/helpers.module";
 import { ConfigModule } from "@nestjs/config";
 import { typeOrmOptions } from "./config/type-orm-module.config";
+import { PaginationModule } from './common/pagination/pagination.module';
 import appConfig from "./config/app.config";
 import databaseConfig from "./config/database.config";
 import envValidation from "./config/env.validation";
@@ -32,6 +33,7 @@ const ENV = process.env.NODE_ENV;
     TagsModule,
     MetaOptionsModule,
     HelpersModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

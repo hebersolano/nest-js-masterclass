@@ -14,14 +14,15 @@ import { PostsService } from "./posts-providers/posts.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreatePostDto } from "./posts-dtos/create-post.dto";
 import { UpdatePostDto } from "./posts-dtos/update-post.dto";
+import { GetPostsQueryDto } from "./posts-dtos/get-posts.dto";
 
 @Controller("posts")
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async getAllPosts() {
-    return await this.postsService.findAll();
+  async getAllPosts(@Query() getPostsQuery: GetPostsQueryDto) {
+    return await this.postsService.findAll(getPostsQuery);
   }
 
   @Get(":id")

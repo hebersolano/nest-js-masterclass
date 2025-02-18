@@ -1,4 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  RequestTimeoutException,
+} from "@nestjs/common";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
 import { DataSource } from "typeorm";
@@ -12,10 +16,15 @@ export class UsersCreateManyProvider {
 
     // create query runner instance
     const queryRunner = this.dataSource.createQueryRunner();
-    // connect query runner to db
-    await queryRunner.connect();
-    // start transaction
-    await queryRunner.startTransaction();
+
+    try {
+      // connect query runner to db
+      await queryRunner.connect();
+      // start transaction
+      await queryRunner.startTransaction();
+    } catch {
+      throw new RequestTimeoutException("Database connection error");
+    }
     try {
       for (const user of createUsersDto) {
         const newUser = queryRunner.manager.create(User, user);
@@ -27,9 +36,14 @@ export class UsersCreateManyProvider {
     } catch {
       // if unsuccessful rollback transaction
       await queryRunner.rollbackTransaction();
+      throw new ConflictException(
+        "Request could not be complete,please try again later",
+      );
     } finally {
       // release connection
-      await queryRunner.release();
+      queryRunner.release().catch(() => {
+        throw new RequestTimeoutException("Error releasing the DB connection");
+      });
     }
 
     return newUsers;

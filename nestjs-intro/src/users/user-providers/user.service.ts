@@ -24,7 +24,7 @@ export class UserService {
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
 
-    // injecting userRepository
+    // repositories
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private readonly dataSource: DataSource,
@@ -34,7 +34,7 @@ export class UserService {
     @Inject(profileConfig.KEY) // custom config module
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
-    // userCreateManyProvider
+    // sub-providers
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 

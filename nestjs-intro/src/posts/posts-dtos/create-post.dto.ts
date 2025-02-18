@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import {
   IsArray,
-  IsDateString,
+  IsDate,
   IsEnum,
   IsInt,
   IsJSON,
@@ -70,7 +70,7 @@ export class CreatePostDto {
   @ApiPropertyOptional({
     example: "2025-02-08T14:57:22.251Z",
   })
-  @IsDateString()
+  @IsDate()
   @IsOptional()
   publishOn?: Date;
 
