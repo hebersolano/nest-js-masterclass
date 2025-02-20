@@ -37,3 +37,9 @@ Response
 ## Exceptions
 
 - [Built-in HTTP exceptions](https://docs.nestjs.com/exception-filters#built-in-http-exceptions)
+
+# Authorization
+
+- Hashing
+- JWT
+- Guards

@@ -8,10 +8,10 @@ import { User } from "../user.entity";
 import { DataSource } from "typeorm";
 
 @Injectable()
-export class UsersCreateManyProvider {
+export class CreateManyUsersProvider {
   constructor(private readonly dataSource: DataSource) {}
 
-  async createMany(createUsersDto: CreateUserDto[]) {
+  async createManyUsers(createUsersDto: CreateUserDto[]) {
     const newUsers: User[] = [];
 
     // create query runner instance
