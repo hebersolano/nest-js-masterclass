@@ -6,13 +6,11 @@ import { Post } from "./post-entities/post.entity";
 import { PostsService } from "./posts-providers/posts.service";
 import { PostsController } from "./posts.controller";
 import { TagsModule } from "src/tags/tags.module";
-import { PaginationModule } from "src/common/pagination/pagination.module";
 
 @Module({
   providers: [PostsService],
   controllers: [PostsController],
   imports: [
-    PaginationModule,
     UserModule,
     TagsModule,
     TypeOrmModule.forFeature([Post, MetaOption]),

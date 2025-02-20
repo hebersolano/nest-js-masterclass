@@ -15,6 +15,7 @@ import { CreatePostDto } from "../posts-dtos/create-post.dto";
 import { UpdatePostDto } from "../posts-dtos/update-post.dto";
 import { GetPostsQueryDto } from "../posts-dtos/get-posts.dto";
 import { PaginationProvider } from "src/common/pagination/pagination.provider";
+import { Paginated } from "src/common/pagination/interfaces/paginated.interface";
 
 @Injectable()
 export class PostsService {
@@ -31,7 +32,7 @@ export class PostsService {
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
 
-  async findAll(getPostsQuery: GetPostsQueryDto) {
+  async findAll(getPostsQuery: GetPostsQueryDto): Promise<Paginated<Post>> {
     return await this.paginationProvider.paginateQuery(
       getPostsQuery,
       this.postRepository,
