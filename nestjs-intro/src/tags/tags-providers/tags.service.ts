@@ -18,7 +18,7 @@ export class TagsService {
   async findMultipleTags(ids: number[]) {
     try {
       return await this.tagRepository.findBy({ id: In(ids) });
-    } catch (error) {
+    } catch {
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",
         { description: "Database connection error" },

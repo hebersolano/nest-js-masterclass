@@ -6,5 +6,6 @@ export default registerAs("jwt", () => {
     audience: process.env.JWT_AUDIENCE,
     issuer: process.env.JWT_ISSUER,
     ttl: process.env.JWT_TTL,
+    refreshTtl: process.env.JWT_TTL,
   };
 });

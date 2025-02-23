@@ -14,4 +14,10 @@ export class AuthController {
   async signIn(@Body() signInDto: SignInDto) {
     return await this.authService.signIn(signInDto);
   }
+
+  @Post("refresh")
+  @Auth(AuthType.None)
+  async refreshTokes(@Body() signInDto: SignInDto) {
+    return await this.authService.signIn(signInDto);
+  }
 }

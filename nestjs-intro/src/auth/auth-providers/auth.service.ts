@@ -10,6 +10,9 @@ import { HashingProvider } from "./hashing.provider";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigType } from "@nestjs/config";
 import jwtConfig from "../config/jwt.config";
+import { User } from "src/users/user.entity";
+import { RefreshTokenDto } from "../auth-dtos/refresh-token.dto";
+import { UserPayload } from "../auth-interfaces/user-payload.type";
 
 @Injectable()
 export class AuthService {
@@ -26,16 +29,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  login(email: string, password: string, id?: string) {
-    console.log(email, password, id);
-    // check user exists database
-    const user = this.usersService.findOneById(1);
-    console.log(">>> login user", user);
-    // login
-    // token
-    return user;
-  }
-
   async signIn(signInDto: SignInDto) {
     // find the user using email
     const user = await this.usersService.findOneByEmail(signInDto.email);
@@ -47,23 +40,68 @@ export class AuthService {
     if (!isAuthenticated)
       throw new UnauthorizedException("Password or email is incorrect");
     // send confirmation
-    const accessToken = await this.jwtService.signAsync(
+    const [accessToken, refreshToken] = await this.generateTokens(user);
+
+    return { accessToken, refreshToken };
+  }
+
+  async refreshTokes(refreshTokenDto: RefreshTokenDto) {
+    // verify refresh token
+    let payload: UserPayload | undefined;
+    try {
+      payload = await this.jwtService.verifyAsync<UserPayload>(
+        refreshTokenDto.refreshToken,
+        {
+          secret: this.jwtConfiguration.secret,
+          issuer: this.jwtConfiguration.issuer,
+          audience: this.jwtConfiguration.audience,
+        },
+      );
+    } catch {
+      throw new UnauthorizedException();
+    }
+    // fetch user from DB
+    // generate tokes
+  }
+
+  /**
+   * @param user
+   * @returns [accessToken, refreshToken]
+   */
+  private async generateTokens(user: User) {
+    return await Promise.all([
+      this.generateAccessToken(user),
+      this.generateRefreshToken(user),
+    ]);
+  }
+
+  private async generateAccessToken(user: User) {
+    return await this.signToken(user.id, this.jwtConfiguration.refreshTtl, {
+      email: user.email,
+    });
+  }
+  private async generateRefreshToken(user: User) {
+    return await this.signToken(user.id, this.jwtConfiguration.refreshTtl);
+  }
+
+  private async signToken<T>(
+    userId: number,
+    expiresIn: string | number | undefined,
+    payload?: T,
+  ) {
+    const token = await this.jwtService.signAsync(
       {
-        sub: user.id,
-        email: user.email,
+        sub: userId,
+        ...payload,
       },
       {
         secret: this.jwtConfiguration.secret,
         issuer: this.jwtConfiguration.issuer,
         audience: this.jwtConfiguration.audience,
-        expiresIn: this.jwtConfiguration.ttl,
+        expiresIn,
       },
     );
 
-    return accessToken;
-  }
-
-  isAuth() {
-    return true;
+    return token;
   }
 }
