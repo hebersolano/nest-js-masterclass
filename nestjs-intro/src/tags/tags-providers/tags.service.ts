@@ -19,7 +19,6 @@ export class TagsService {
     try {
       return await this.tagRepository.findBy({ id: In(ids) });
     } catch (error) {
-      console.error(">>> Error find multiple tags service", error);
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",
         { description: "Database connection error" },

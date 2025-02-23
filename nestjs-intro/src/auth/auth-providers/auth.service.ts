@@ -17,6 +17,7 @@ export class AuthService {
     // configuration
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+
     @Inject(forwardRef(() => UserService))
     private readonly usersService: UserService,
 
@@ -52,14 +53,13 @@ export class AuthService {
         email: user.email,
       },
       {
-        secret: this.jwtConfiguration.audience,
+        secret: this.jwtConfiguration.secret,
         issuer: this.jwtConfiguration.issuer,
         audience: this.jwtConfiguration.audience,
         expiresIn: this.jwtConfiguration.ttl,
       },
     );
-    console.log(accessToken);
-    console.log(this.jwtConfiguration);
+
     return accessToken;
   }
 

@@ -16,6 +16,7 @@ import { UpdatePostDto } from "../posts-dtos/update-post.dto";
 import { GetPostsQueryDto } from "../posts-dtos/get-posts.dto";
 import { PaginationProvider } from "src/common/pagination/pagination.provider";
 import { Paginated } from "src/common/pagination/interfaces/paginated.interface";
+import { UserData } from "src/auth/auth-interfaces/active-user.type";
 
 @Injectable()
 export class PostsService {
@@ -49,7 +50,7 @@ export class PostsService {
     });
   }
 
-  async create(createPostDto: CreatePostDto) {
+  async create(createPostDto: CreatePostDto, user: UserData) {
     const post = { ...createPostDto, tags: undefined }; // to avoid type error on postRepo create
     // check if author user exist
     const userExists = await this.usersService.exists(createPostDto.authorId);
@@ -75,14 +76,14 @@ export class PostsService {
       await this.postRepository
         .createQueryBuilder()
         .relation("author")
-        .of(newPost.id)
+        .of(user.userId)
         .set(createPostDto.authorId);
       return newPost;
     } catch (error) {
-      console.error(">>> Error create post service", error);
+      if (!(error instanceof Error)) throw error;
       throw new RequestTimeoutException(
-        "Unable to process request at the moment, please try later",
-        { description: "Database connection error" },
+        "Unable to process request, please try again",
+        { description: error.name + ": " + error.message },
       );
     }
   }

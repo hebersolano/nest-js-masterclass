@@ -10,11 +10,13 @@ import {
   Post,
   Query,
 } from "@nestjs/common";
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Auth } from "src/auth/auth-decorators/auth.decorator";
+import { AuthType } from "src/auth/auth-enums/auth-type.enum";
 import { CreateUserDto } from "./user-dtos/create-user.dto";
 import { GetUserParamDto } from "./user-dtos/get-user-param.dto";
 import { PatchUserDto } from "./user-dtos/patch-user.dto";
 import { UserService } from "./user-providers/user.service";
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @Controller("users")
 @ApiTags("Users")
@@ -61,6 +63,7 @@ export class UserController {
   }
 
   @Post()
+  @Auth(AuthType.None)
   async createUser(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
   }
