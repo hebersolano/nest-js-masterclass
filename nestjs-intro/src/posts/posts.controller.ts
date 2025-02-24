@@ -9,14 +9,14 @@ import {
   Post,
   Query,
 } from "@nestjs/common";
-import { GetPostParamsDto } from "./posts-dtos/posts-params.dto";
-import { PostsService } from "./posts-providers/posts.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CreatePostDto } from "./posts-dtos/create-post.dto";
-import { UpdatePostDto } from "./posts-dtos/update-post.dto";
-import { GetPostsQueryDto } from "./posts-dtos/get-posts.dto";
 import { ActiveUser } from "src/auth/auth-decorators/active-user.decorato";
-import { UserData } from "src/auth/auth-interfaces/active-user.type";
+import { ActiveUserData } from "src/auth/auth-interfaces/active-user.type";
+import { CreatePostDto } from "./posts-dtos/create-post.dto";
+import { GetPostsQueryDto } from "./posts-dtos/get-posts.dto";
+import { GetPostParamsDto } from "./posts-dtos/posts-params.dto";
+import { UpdatePostDto } from "./posts-dtos/update-post.dto";
+import { PostsService } from "./posts-providers/posts.service";
 
 @Controller("posts")
 export class PostsController {
@@ -44,9 +44,9 @@ export class PostsController {
   @Post()
   async createPost(
     @Body() createPostDto: CreatePostDto,
-    @ActiveUser() user: UserData,
+    @ActiveUser() activeUser: ActiveUserData,
   ) {
-    return this.postsService.create(createPostDto, user);
+    return this.postsService.create(createPostDto, activeUser);
   }
 
   @ApiOperation({ summary: "Updates an existing blog post" })

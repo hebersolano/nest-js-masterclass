@@ -1,8 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
-import { SignInDto } from "./auth-dtos/signin.dto";
-import { AuthService } from "./auth-providers/auth.service";
 import { Auth } from "./auth-decorators/auth.decorator";
+import { RefreshTokenDto } from "./auth-dtos/refresh-token.dto";
+import { SignInDto } from "./auth-dtos/signin.dto";
 import { AuthType } from "./auth-enums/auth-type.enum";
+import { AuthService } from "./auth-providers/auth.service";
 
 @Controller("auth")
 export class AuthController {
@@ -16,8 +17,7 @@ export class AuthController {
   }
 
   @Post("refresh")
-  @Auth(AuthType.None)
-  async refreshTokes(@Body() signInDto: SignInDto) {
-    return await this.authService.signIn(signInDto);
+  async refreshTokes(@Body() refreshTokenDto: RefreshTokenDto) {
+    return await this.authService.refreshTokes(refreshTokenDto);
   }
 }

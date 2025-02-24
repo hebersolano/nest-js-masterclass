@@ -4,11 +4,11 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { UserPayload } from "../auth-interfaces/user-payload.type";
 import { USER_KEY } from "../auth-constans/user-key.const";
+import { AccessTokenData } from "../auth-interfaces/user-payload.type";
 
 type AuthRequest = Request & {
-  user: UserPayload | undefined;
+  user: AccessTokenData | undefined;
 };
 
 export const ActiveUser = createParamDecorator(
@@ -16,6 +16,6 @@ export const ActiveUser = createParamDecorator(
     const request = ctx.switchToHttp().getRequest<AuthRequest>();
     const user = request[USER_KEY];
     if (!user) throw new UnauthorizedException();
-    return { userId: user.aud, email: user.email };
+    return { userId: user.uid, email: user.email, exp: user.exp };
   },
 );

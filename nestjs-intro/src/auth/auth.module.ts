@@ -7,15 +7,18 @@ import { HashingProvider } from "./auth-providers/hashing.provider";
 import { ConfigModule } from "@nestjs/config";
 import jwtConfig from "./config/jwt.config";
 import { JwtModule } from "@nestjs/jwt";
+import { TokenProvider } from "./auth-providers/token.provider";
 
 @Module({
   controllers: [AuthController],
   providers: [
     AuthService,
     {
+      // When HashingProvider is use, BcryptProvider is inject instead
       provide: HashingProvider,
       useClass: BcryptProvider,
-    }, // When HashingProvider is use, BcryptProvider is inject instead
+    },
+    TokenProvider,
   ],
   exports: [AuthService, HashingProvider],
   imports: [

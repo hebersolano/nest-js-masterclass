@@ -16,7 +16,7 @@ import { UpdatePostDto } from "../posts-dtos/update-post.dto";
 import { GetPostsQueryDto } from "../posts-dtos/get-posts.dto";
 import { PaginationProvider } from "src/common/pagination/pagination.provider";
 import { Paginated } from "src/common/pagination/interfaces/paginated.interface";
-import { UserData } from "src/auth/auth-interfaces/active-user.type";
+import { ActiveUserData } from "src/auth/auth-interfaces/active-user.type";
 
 @Injectable()
 export class PostsService {
@@ -50,7 +50,7 @@ export class PostsService {
     });
   }
 
-  async create(createPostDto: CreatePostDto, user: UserData) {
+  async create(createPostDto: CreatePostDto, activeUser: ActiveUserData) {
     const post = { ...createPostDto, tags: undefined }; // to avoid type error on postRepo create
     // check if author user exist
     const userExists = await this.usersService.exists(createPostDto.authorId);
@@ -76,7 +76,7 @@ export class PostsService {
       await this.postRepository
         .createQueryBuilder()
         .relation("author")
-        .of(user.userId)
+        .of(activeUser.userId)
         .set(createPostDto.authorId);
       return newPost;
     } catch (error) {

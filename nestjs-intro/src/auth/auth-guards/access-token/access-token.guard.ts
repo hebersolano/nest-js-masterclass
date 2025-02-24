@@ -9,6 +9,7 @@ import { ConfigType } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { USER_KEY } from "src/auth/auth-constans/user-key.const";
+import { AccessTokenData } from "src/auth/auth-interfaces/user-payload.type";
 import jwtConfig from "src/auth/config/jwt.config";
 
 @Injectable()
@@ -28,9 +29,14 @@ export class AccessTokenGuard implements CanActivate {
     if (!token) throw new UnauthorizedException();
     // validate token
     try {
-      const payload = await this.jwtService.verifyAsync<object>(token, {
-        secret: this.jwtConfiguration.secret,
-      });
+      const payload = await this.jwtService.verifyAsync<AccessTokenData>(
+        token,
+        {
+          secret: this.jwtConfiguration.secret,
+          issuer: this.jwtConfiguration.issuer,
+          audience: this.jwtConfiguration.audience,
+        },
+      );
       request[USER_KEY] = payload;
     } catch {
       throw new UnauthorizedException();
