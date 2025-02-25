@@ -34,11 +34,11 @@ export class CreateManyUsersProvider {
       // if successful commit transaction
       await queryRunner.commitTransaction();
     } catch (error) {
-      let errorMsg = " ";
-      if (error instanceof Error) errorMsg += error.message;
+      let errorMsg = "Request could not be complete";
+      if (error instanceof Error) errorMsg += ": " + error.message;
       // if unsuccessful rollback transaction
       await queryRunner.rollbackTransaction();
-      throw new ConflictException("Request could not be complete:" + errorMsg);
+      throw new ConflictException(errorMsg);
     } finally {
       // release connection
       queryRunner.release().catch(() => {

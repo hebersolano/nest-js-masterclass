@@ -7,5 +7,7 @@ export default registerAs("jwt", () => {
     issuer: process.env.JWT_ISSUER,
     ttl: process.env.JWT_TTL,
     refreshTtl: process.env.JWT_TTL,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   };
 });

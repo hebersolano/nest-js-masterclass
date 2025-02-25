@@ -9,7 +9,7 @@ import { ConfigService, ConfigType } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AuthService } from "src/auth/auth-providers/auth.service";
 import profileConfig from "src/config/profile.config";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
 import { CreateManyUsersProvider } from "./create-many.provider";
@@ -64,25 +64,32 @@ export class UserService {
     try {
       user = await this.userRepository.findOneBy({ id });
     } catch (error) {
-      console.error(">>> Error user service findOneById", error, id);
+      let errorMsg = "Database error";
+      if (error instanceof Error) errorMsg += ": " + error.message;
       throw new RequestTimeoutException(
-        "Unable to process request at the moment, please try later",
-        { description: "Database connection error" },
+        "Unable to process request at the moment, try later",
+        { description: errorMsg },
       );
     }
     if (!user) throw new BadRequestException("User does not exists");
     return user;
   }
 
-  async findOneByEmail(email: string) {
+  /**
+   * find a user by a where query or throws RequestTimeoutException
+   * @param where: FindOptionsWhere
+   * @returns User
+   */
+  async findOneBy(where: FindOptionsWhere<User>) {
     let user: User | null = null;
     try {
-      user = await this.userRepository.findOneBy({ email });
+      user = await this.userRepository.findOneBy(where);
     } catch (error) {
-      console.error(">>> Error user service findOneByEmail", error);
+      let errorMsg = "Database error";
+      if (error instanceof Error) errorMsg += ": " + error.message;
       throw new RequestTimeoutException(
-        "Unable to process request at the moment, please try later",
-        { description: "Database connection error" },
+        "Unable to process request at the moment, try later",
+        { description: errorMsg },
       );
     }
     if (!user) throw new BadRequestException("User does not exists");
