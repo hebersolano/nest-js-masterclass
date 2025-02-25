@@ -13,6 +13,7 @@
   - [@nestjs/typeorm](https://github.com/nestjs/typeorm#readme)
   - PostgreSQL driver `npm install pg --save`
   - [PostgresSQL Docs](https://www.postgresql.org/docs/17/index.html)
+- [google auth library](https://github.com/googleapis/google-auth-library-nodejs)
 
 # NestJS Docs
 
