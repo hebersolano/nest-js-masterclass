@@ -1,0 +1,1 @@
+export type UserFindByQuery = { id?: number; googleId?: string };

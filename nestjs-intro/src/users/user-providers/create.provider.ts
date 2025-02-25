@@ -10,6 +10,7 @@ import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
 import { HashingProvider } from "src/auth/auth-providers/hashing.provider";
 import { InjectRepository } from "@nestjs/typeorm";
+import { GoogleUserType } from "../users-types/google-user.type";
 
 @Injectable()
 export class CreateUserProvider {
@@ -45,6 +46,38 @@ export class CreateUserProvider {
       let newUser = this.userRepository.create(createUserDto);
       newUser = await this.userRepository.save(newUser);
       return newUser;
+    } catch {
+      throw new RequestTimeoutException(
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
+      );
+    }
+  }
+
+  async createGoogleUser(googleUserData: GoogleUserType): Promise<User> {
+    // Check if user exist
+    let user: User | null;
+    try {
+      user = await this.userRepository.findOneBy({
+        email: googleUserData.email,
+      });
+    } catch {
+      throw new RequestTimeoutException(
+        "Unable to process request at the moment, please try later",
+        { description: "Database connection error" },
+      );
+    }
+    // if user exist by email, update googleId
+    if (user) {
+      console.log("user has mail but not google id", user);
+      user.googleId = googleUserData.googleId;
+      return await this.userRepository.save(user);
+    }
+
+    // Create a new user
+    try {
+      const newUser = this.userRepository.create(googleUserData);
+      return await this.userRepository.save(newUser);
     } catch {
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",

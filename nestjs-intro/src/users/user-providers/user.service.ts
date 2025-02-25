@@ -14,6 +14,8 @@ import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
 import { CreateManyUsersProvider } from "./create-many.provider";
 import { CreateUserProvider } from "./create.provider";
+import { UserFindByQuery } from "../users-types/find-by-query.type";
+import { GoogleUserType } from "../users-types/google-user.type";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -80,7 +82,7 @@ export class UserService {
    * @param where: FindOptionsWhere
    * @returns User
    */
-  async findOneBy(where: FindOptionsWhere<User>) {
+  async findOneBy(where: FindOptionsWhere<UserFindByQuery>) {
     let user: User | null = null;
     try {
       user = await this.userRepository.findOneBy(where);
@@ -100,13 +102,17 @@ export class UserService {
     return await this.createUserProvider.createUser(createUserDto);
   }
 
+  async createGoogleUser(googleUserData: GoogleUserType) {
+    return await this.createUserProvider.createGoogleUser(googleUserData);
+  }
+
   async createMany(createUsersDto: CreateUserDto[]) {
     return await this.createManyUsersProvider.createManyUsers(createUsersDto);
   }
 
-  async exists(id: number) {
+  async existsBy(where: FindOptionsWhere<UserFindByQuery>) {
     try {
-      return await this.userRepository.existsBy({ id });
+      return await this.userRepository.existsBy(where);
     } catch {
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",

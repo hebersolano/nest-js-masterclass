@@ -7,11 +7,10 @@ import {
 } from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
 import { OAuth2Client, TokenPayload } from "google-auth-library";
-import jwtConfig from "src/auth/config/jwt.config";
-import { GoogleTokenDto } from "../../social-dtos/google-token.dto";
-import { UserService } from "src/users/user-providers/user.service";
 import { TokenProvider } from "src/auth/auth-providers/token.provider";
-import { CreateUserDto } from "src/users/user-dtos/create-user.dto";
+import jwtConfig from "src/auth/config/jwt.config";
+import { UserService } from "src/users/user-providers/user.service";
+import { GoogleTokenDto } from "../../social-dtos/google-token.dto";
 
 @Injectable()
 export class GoogleAuthenticationService implements OnModuleInit {
@@ -64,8 +63,14 @@ export class GoogleAuthenticationService implements OnModuleInit {
       return this.tokenProvider.generateTokens(user);
     } catch (error) {
       // if user doesn't exists, create a new one
-      if (email && lastName && firstName) await this.usersService.create();
-      console.error("googe auth error", error);
+      if (email && lastName && firstName)
+        await this.usersService.createGoogleUser({
+          googleId,
+          firstName,
+          lastName,
+          email,
+        });
+      console.error("google auth error", error);
     }
   }
 }

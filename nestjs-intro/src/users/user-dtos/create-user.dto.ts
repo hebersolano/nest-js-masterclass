@@ -25,6 +25,6 @@ export class CreateUserDto {
       "Minimum eight characters, at least one letter, one number and one special character",
   })
   @Length(8, 96)
-  @IsOptional()
+  @IsNotEmpty()
   password: string;
 }

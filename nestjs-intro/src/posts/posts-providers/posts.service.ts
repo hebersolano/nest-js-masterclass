@@ -53,7 +53,9 @@ export class PostsService {
   async create(createPostDto: CreatePostDto, activeUser: ActiveUserData) {
     const post = { ...createPostDto, tags: undefined }; // to avoid type error on postRepo create
     // check if author user exist
-    const userExists = await this.usersService.exists(createPostDto.authorId);
+    const userExists = await this.usersService.existsBy({
+      id: createPostDto.authorId,
+    });
     if (!userExists) throw new BadRequestException("Author doesn't exists");
 
     let newPost = this.postRepository.create(post);

@@ -90,6 +90,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@compodoc/compodoc",
+      "@nestjs/core",
+      "@scarf/scarf",
+      "@swc/core",
       "bcrypt"
     ]
   }
