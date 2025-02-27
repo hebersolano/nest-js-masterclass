@@ -16,10 +16,12 @@ import { MetaOptionsModule } from "./meta-options/meta-options.module";
 import { PostsModule } from "./posts/posts.module";
 import { TagsModule } from "./tags/tags.module";
 import { UserModule } from "./users/user.module";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { AccessTokenGuard } from "./auth/auth-guards/access-token/access-token.guard";
 import jwtConfig from "./auth/config/jwt.config";
 import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentication.guard";
+import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
+import { UploadsModule } from './uploads/uploads.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -43,11 +45,13 @@ const ENV = process.env.NODE_ENV;
     MetaOptionsModule,
     HelpersModule,
     PaginationModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     { provide: APP_GUARD, useClass: AuthenticationGuard },
+    { provide: APP_INTERCEPTOR, useClass: DataResponseInterceptor },
     AccessTokenGuard,
   ],
 })

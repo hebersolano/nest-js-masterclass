@@ -14,4 +14,7 @@ export default Joi.object({
   JWT_ISSUER: Joi.string().required(),
   JWT_TTL: Joi.string().required(),
   JWT_REFRESH_TTL: Joi.string().required(),
+  AWS_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_ACCESS_KEY_SECRET: Joi.string().required(),
+  AWS_CLOUDFRONT_URL: Joi.string().required(),
 });
