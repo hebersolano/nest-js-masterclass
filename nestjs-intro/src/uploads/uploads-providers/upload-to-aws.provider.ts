@@ -19,10 +19,10 @@ export class UploadToAwsProvider {
           ContentType: file.mimetype,
         })
         .promise();
-
       console.log(uploadResult);
+      return uploadResult;
     } catch {
-      throw new RequestTimeoutException();
+      throw new RequestTimeoutException("Error saving file");
     }
   }
 
