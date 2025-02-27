@@ -1,0 +1,24 @@
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiHeaders } from "@nestjs/swagger";
+import { UploadsService } from "./uploads-providers/uploads.service";
+
+@Controller("uploads")
+export class UploadsController {
+  constructor(private readonly uploadsService: UploadsService) {}
+
+  @ApiHeaders([
+    { name: "Content-Type", description: "multipart/form-data" },
+    { name: "Authorization", description: "Bearer Token" },
+  ])
+  @UseInterceptors(FileInterceptor("file"))
+  @Post("file")
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.uploadsService.uploadFile(file);
+  }
+}

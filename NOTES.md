@@ -49,3 +49,7 @@ Response
 ## Interceptors
 
 Execute before controller and after response is generated
+
+## File uploading
+
+Website > cloud Front (CDN) > S3 Storage
