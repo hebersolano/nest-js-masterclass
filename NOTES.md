@@ -45,3 +45,7 @@ Response
 - JWT
 - Guards
 - Metadata / Reflector
+
+## Interceptors
+
+Execute before controller and after response is generated

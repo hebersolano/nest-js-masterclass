@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   DefaultValuePipe,
   Get,
@@ -9,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Auth } from "src/auth/auth-decorators/auth.decorator";
@@ -63,6 +65,7 @@ export class UserController {
   }
 
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   @Auth(AuthType.None)
   async createUser(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);

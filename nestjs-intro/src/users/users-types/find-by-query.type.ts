@@ -1,1 +1,1 @@
-export type UserFindByQuery = { id?: number; googleId?: string };
+export type UserFindByQuery = { id?: number; googleId?: string; email: string };
