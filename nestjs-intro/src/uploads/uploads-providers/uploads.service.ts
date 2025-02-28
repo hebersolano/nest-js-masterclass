@@ -3,14 +3,13 @@ import {
   ConflictException,
   Injectable,
 } from "@nestjs/common";
-import { Repository } from "typeorm";
-import { UploadEntity } from "../upload.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UploadToAwsProvider } from "./upload-to-aws.provider";
 import { ConfigService } from "@nestjs/config";
-import { mimeTypes } from "../uploads-enum/mime-type.enum";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { validMimeTypes } from "../constants/valid-mimetypes";
+import { UploadEntity } from "../upload.entity";
 import { fileTypes } from "../uploads-enum/file-type.enum";
+import { UploadToAwsProvider } from "./upload-to-aws.provider";
 
 @Injectable()
 export class UploadsService {
@@ -29,19 +28,20 @@ export class UploadsService {
       throw new BadRequestException("File type not supported");
 
     // upload file to AWS s3 bucket
-    const name = await this.uploadToAwsProvider.fileUpload(file);
+    const fileName = await this.uploadToAwsProvider.fileUpload(file);
 
     // generate new entry in DB
     try {
       const newUpload = this.uploadsRepository.create({
-        name: name.Key,
-        path: `https://${this.configService.get("appConfig.awsCloundFront")}/${name.Key}`,
+        name: fileName,
+        path: `https://${this.configService.get("appConfig.awsCloundFront")}/${fileName}`,
         type: fileTypes.IMAGE,
         mime: file.mimetype,
         size: file.size,
       });
       return await this.uploadsRepository.save(newUpload);
-    } catch {
+    } catch (error) {
+      console.error("er", error);
       throw new ConflictException();
     }
   }

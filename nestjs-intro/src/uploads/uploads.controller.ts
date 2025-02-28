@@ -7,6 +7,8 @@ import {
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiHeaders } from "@nestjs/swagger";
 import { UploadsService } from "./uploads-providers/uploads.service";
+import { Auth } from "src/auth/auth-decorators/auth.decorator";
+import { AuthType } from "src/auth/auth-enums/auth-type.enum";
 
 @Controller("uploads")
 export class UploadsController {
@@ -18,7 +20,9 @@ export class UploadsController {
   ])
   @UseInterceptors(FileInterceptor("file"))
   @Post("file")
+  @Auth(AuthType.None)
   uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log("file res", file);
     return this.uploadsService.uploadFile(file);
   }
 }

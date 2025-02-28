@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-
 import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AppController } from "./app.controller";
@@ -21,7 +20,7 @@ import { AccessTokenGuard } from "./auth/auth-guards/access-token/access-token.g
 import jwtConfig from "./auth/config/jwt.config";
 import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentication.guard";
 import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
-import { UploadsModule } from './uploads/uploads.module';
+import { UploadsModule } from "./uploads/uploads.module";
 
 const ENV = process.env.NODE_ENV;
 
