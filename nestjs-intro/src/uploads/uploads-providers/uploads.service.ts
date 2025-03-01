@@ -7,7 +7,7 @@ import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { validMimeTypes } from "../constants/valid-mimetypes";
-import { UploadEntity } from "../upload.entity";
+import { Upload } from "../upload.entity";
 import { fileTypes } from "../uploads-enum/file-type.enum";
 import { UploadToAwsProvider } from "./upload-to-aws.provider";
 
@@ -16,8 +16,8 @@ export class UploadsService {
   constructor(
     private readonly configService: ConfigService,
 
-    @InjectRepository(UploadEntity)
-    private readonly uploadsRepository: Repository<UploadEntity>,
+    @InjectRepository(Upload)
+    private readonly uploadsRepository: Repository<Upload>,
 
     private readonly uploadToAwsProvider: UploadToAwsProvider,
   ) {}
@@ -34,7 +34,7 @@ export class UploadsService {
     try {
       const newUpload = this.uploadsRepository.create({
         name: fileName,
-        path: `https://${this.configService.get("appConfig.awsCloundFront")}/${fileName}`,
+        path: `https://${this.configService.get("appConfig.awsCloudfrontUrl")}/${fileName}`,
         type: fileTypes.IMAGE,
         mime: file.mimetype,
         size: file.size,

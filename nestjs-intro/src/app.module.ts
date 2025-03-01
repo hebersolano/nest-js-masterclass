@@ -37,6 +37,7 @@ const ENV = process.env.NODE_ENV;
       global: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmOptions),
+    UploadsModule,
     UserModule,
     PostsModule,
     AuthModule,
@@ -44,7 +45,6 @@ const ENV = process.env.NODE_ENV;
     MetaOptionsModule,
     HelpersModule,
     PaginationModule,
-    UploadsModule,
   ],
   controllers: [AppController],
   providers: [
