@@ -11,6 +11,7 @@ import { User } from "../user.entity";
 import { HashingProvider } from "src/auth/auth-providers/hashing.provider";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GoogleUserType } from "../users-types/google-user.type";
+import { MailService } from "src/mail/mail-providers/mail.service";
 
 @Injectable()
 export class CreateUserProvider {
@@ -21,6 +22,8 @@ export class CreateUserProvider {
 
     @Inject(forwardRef(() => HashingProvider))
     private readonly hashingProvider: HashingProvider,
+
+    private readonly mailService: MailService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -45,8 +48,12 @@ export class CreateUserProvider {
     try {
       let newUser = this.userRepository.create(createUserDto);
       newUser = await this.userRepository.save(newUser);
+
+      await this.mailService.sendUserWelcome(newUser);
+
       return newUser;
-    } catch {
+    } catch (error) {
+      console.error(">>> create user error", error);
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",
         { description: "Database connection error" },
