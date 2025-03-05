@@ -7,7 +7,6 @@ import {
 } from "@nestjs/common";
 import { ConfigService, ConfigType } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
-import { AuthService } from "src/auth/auth-providers/auth.service";
 import profileConfig from "src/config/profile.config";
 import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
@@ -16,6 +15,7 @@ import { CreateManyUsersProvider } from "./create-many.provider";
 import { CreateUserProvider } from "./create.provider";
 import { UserFindByQuery } from "../users-types/find-by-query.type";
 import { GoogleUserType } from "../users-types/google-user.type";
+import { AuthService } from "src/auth/auth-providers/auth.service";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -24,18 +24,18 @@ import { GoogleUserType } from "../users-types/google-user.type";
 export class UserService {
   constructor(
     // circular dependency  UserService <=> AuthService
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
+    // @Inject(forwardRef(() => AuthService))
+    // private readonly authService: AuthService,
 
     // repositories
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly dataSource: DataSource,
+    // private readonly dataSource: DataSource,
 
     // configuration modules
-    private readonly configService: ConfigService,
-    @Inject(profileConfig.KEY) // custom config module
-    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+    // private readonly configService: ConfigService,
+    // @Inject(profileConfig.KEY) // custom config module
+    // private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
     // sub-providers
     private readonly createManyUsersProvider: CreateManyUsersProvider,
