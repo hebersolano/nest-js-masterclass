@@ -59,3 +59,4 @@ Website > cloud Front (CDN) > S3 Storage
 ## Testing
 
 - Jest testing
+- E2E testing

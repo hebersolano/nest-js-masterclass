@@ -21,7 +21,7 @@ import jwtConfig from "./auth/config/jwt.config";
 import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentication.guard";
 import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
 import { UploadsModule } from "./uploads/uploads.module";
-import { MailModule } from './mail/mail.module';
+import { MailModule } from "./mail/mail.module";
 
 const ENV = process.env.NODE_ENV;
 

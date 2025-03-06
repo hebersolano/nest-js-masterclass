@@ -33,7 +33,8 @@ export class CreateUserProvider {
       userExists = await this.userRepository.existsBy({
         email: createUserDto.email,
       });
-    } catch {
+    } catch (error) {
+      console.error("", error);
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",
         { description: "Database connection error" },

@@ -45,7 +45,7 @@ describe("UserService", () => {
 
   describe("createUser", () => {
     it("should be defined", () => {
-      expect(service.create).toBeDefined();
+      expect(service.create.bind(null)).toBeDefined();
     });
     it("should call createUser on CreateUserProvider", async () => {
       const user = await service.create({
