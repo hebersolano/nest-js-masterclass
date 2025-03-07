@@ -50,7 +50,7 @@ export class CreateUserProvider {
       let newUser = this.userRepository.create(createUserDto);
       newUser = await this.userRepository.save(newUser);
 
-      await this.mailService.sendUserWelcome(newUser);
+      // await this.mailService.sendUserWelcome(newUser);
 
       return newUser;
     } catch (error) {

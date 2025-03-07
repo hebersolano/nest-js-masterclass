@@ -4,6 +4,12 @@ import { App } from "supertest/types";
 import { bootstrapNestApp } from "test/helpers/bootstrap-nest-app.helper";
 import { dropDatabase } from "test/helpers/drop-database.helper";
 import * as request from "supertest";
+import {
+  completeUser,
+  missingEmail,
+  missingFirstName,
+  missingPassword,
+} from "./users.post.sample-data";
 
 describe("[User] @Post Endpoints", () => {
   let app: INestApplication<App>;
@@ -21,19 +27,49 @@ describe("[User] @Post Endpoints", () => {
     await app.close();
   });
 
-  it("/users - Endpoint is public", async () => {
+  it("/users - endpoint is public", () => {
+    return request(httpServer).post("/users").send({}).expect(400);
+  });
+  it("/users - firstName is mandatory", () => {
     return request(httpServer)
       .post("/users")
-      .send({})
-      .expect(400)
-      .then(({ body }) => {
-        console.log("data rest test", body);
+      .send(missingFirstName)
+      .expect(400);
+  });
+  it("/users - email is mandatory", () => {
+    return request(httpServer).post("/users").send(missingEmail).expect(400);
+  });
+  it("/users - password is mandatory", () => {
+    return request(httpServer).post("/users").send(missingPassword).expect(400);
+  });
+  it("/users - valid request successfully creates user", () => {
+    return request(httpServer)
+      .post("/users")
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }: { body: { data: { [key: string]: any } } }) => {
+        expect(body.data).toBeDefined();
+        expect(body.data?.firstName).toBe(completeUser.firstName);
+        expect(body.data?.lastName).toBe(completeUser.lastName);
+        console.log(body);
       });
   });
-  it.todo("/users - firstName is mandatory");
-  it.todo("/users - email is mandatory");
-  it.todo("/users - password is mandatory");
-  it.todo("/users - valid request successfully creates user");
-  it.todo("/users - password is not returned in response");
-  it.todo("/users - googleId is not returned in response");
+  it("/users - password is not returned in response", () => {
+    return request(httpServer)
+      .post("/users")
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }: { body: { data: { [key: string]: any } } }) => {
+        expect(body.data?.password).toBeUndefined();
+      });
+  });
+  it("/users - googleId is not returned in response", () => {
+    return request(httpServer)
+      .post("/users")
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }: { body: { data: { [key: string]: any } } }) => {
+        expect(body.data?.googleId).toBeUndefined();
+      });
+  });
 });

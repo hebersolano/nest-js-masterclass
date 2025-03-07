@@ -25,7 +25,7 @@ import { EjsAdapter } from "@nestjs-modules/mailer/dist/adapters/ejs.adapter";
               pass: config.get<string>("appConfig.smtpPassword"),
             },
             logger: true,
-            debug: true,
+            // debug: true,
           },
           defaults: {
             from: `My nestjs blog <no-reply@my-blog.com>`,
