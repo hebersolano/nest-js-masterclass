@@ -22,6 +22,7 @@ import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentic
 import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
 import { UploadsModule } from "./uploads/uploads.module";
 import { MailModule } from "./mail/mail.module";
+import { MongooseModule } from "@nestjs/mongoose";
 
 const ENV = process.env.NODE_ENV;
 
@@ -38,6 +39,9 @@ const ENV = process.env.NODE_ENV;
       global: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmOptions),
+    MongooseModule.forRoot("mongodb://localhost:27017/", {
+      dbName: "nestjs-blog",
+    }),
     UploadsModule,
     UserModule,
     PostsModule,
