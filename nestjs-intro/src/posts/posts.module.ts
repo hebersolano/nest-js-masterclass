@@ -6,6 +6,8 @@ import { Post } from "./post-entities/post.entity";
 import { PostsService } from "./posts-providers/posts.service";
 import { PostsController } from "./posts.controller";
 import { TagsModule } from "src/tags/tags.module";
+import { MongooseModule } from "@nestjs/mongoose";
+import { PostMg, PostMgSchema } from "./post.schema";
 
 @Module({
   providers: [PostsService],
@@ -14,6 +16,7 @@ import { TagsModule } from "src/tags/tags.module";
     UserModule,
     TagsModule,
     TypeOrmModule.forFeature([Post, MetaOption]),
+    MongooseModule.forFeature([{ name: PostMg.name, schema: PostMgSchema }]),
   ],
 })
 export class PostsModule {}
