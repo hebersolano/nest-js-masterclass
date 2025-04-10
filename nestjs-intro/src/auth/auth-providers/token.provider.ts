@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "src/users/user.entity";
@@ -13,6 +18,11 @@ export class TokenProvider {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * Verify string token and returns payload if it's valid
+   * @param token String
+   * @returns Object, token payload
+   */
   async verifyToken<T extends object>(token: string): Promise<T> {
     try {
       return await this.jwtService.verifyAsync<T>(token, {
@@ -25,6 +35,11 @@ export class TokenProvider {
     }
   }
 
+  /**
+   * Generates access-token and refresh-token
+   * @param user User
+   * @returns [String, String], [accessToken, refreshToken]
+   */
   async generateTokens(user: User) {
     return await Promise.all([
       this.generateAccessToken(user),
@@ -32,34 +47,45 @@ export class TokenProvider {
     ]);
   }
 
-  async generateAccessToken(user: User) {
-    return await this.signToken(user.id, this.jwtConfiguration.refreshTtl, {
+  private async generateAccessToken(user: User) {
+    return await this.signToken(user.id, this.jwtConfiguration.ttl, {
       email: user.email,
     });
   }
 
-  async generateRefreshToken(user: User) {
+  private async generateRefreshToken(user: User) {
     return await this.signToken(user.id, this.jwtConfiguration.refreshTtl);
   }
 
-  async signToken<T>(
+  /**
+   *
+   * @param userId
+   * @param expiresIn
+   * @param payload Object
+   * @returns
+   */
+  private async signToken<T>(
     userId: number,
     expiresIn: string | number | undefined,
     payload?: T,
   ) {
-    const token = await this.jwtService.signAsync(
-      {
-        uid: userId,
-        ...payload,
-      },
-      {
-        secret: this.jwtConfiguration.secret,
-        issuer: this.jwtConfiguration.issuer,
-        audience: this.jwtConfiguration.audience,
-        expiresIn,
-      },
-    );
+    try {
+      const token = await this.jwtService.signAsync(
+        {
+          uid: userId,
+          ...payload,
+        },
+        {
+          secret: this.jwtConfiguration.secret,
+          issuer: this.jwtConfiguration.issuer,
+          audience: this.jwtConfiguration.audience,
+          expiresIn,
+        },
+      );
 
-    return token;
+      return token;
+    } catch {
+      throw new InternalServerErrorException();
+    }
   }
 }

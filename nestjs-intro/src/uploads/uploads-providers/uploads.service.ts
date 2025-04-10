@@ -27,7 +27,7 @@ export class UploadsService {
     if (!validMimeTypes.includes(file.mimetype))
       throw new BadRequestException("File type not supported");
 
-    // upload file to AWS s3 bucket
+    // upload file to AWS S3 bucket
     const fileName = await this.uploadToAwsProvider.fileUpload(file);
 
     // generate new entry in DB
@@ -41,7 +41,7 @@ export class UploadsService {
       });
       return await this.uploadsRepository.save(newUpload);
     } catch (error) {
-      console.error("er", error);
+      console.error("uploadFile error: ", error);
       throw new ConflictException();
     }
   }

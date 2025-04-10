@@ -1,21 +1,25 @@
 import {
   BadRequestException,
-  forwardRef,
-  Inject,
+  // forwardRef,
+  // Inject,
   Injectable,
   RequestTimeoutException,
 } from "@nestjs/common";
-import { ConfigService, ConfigType } from "@nestjs/config";
+// import { ConfigService, ConfigType } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
-import profileConfig from "src/config/profile.config";
-import { DataSource, FindOptionsWhere, Repository } from "typeorm";
+// import profileConfig from "src/config/profile.config";
+import {
+  // DataSource,
+  FindOptionsWhere,
+  Repository,
+} from "typeorm";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
 import { User } from "../user.entity";
 import { CreateManyUsersProvider } from "./create-many.provider";
 import { CreateUserProvider } from "./create.provider";
 import { UserFindByQuery } from "../users-types/find-by-query.type";
 import { GoogleUserType } from "../users-types/google-user.type";
-import { AuthService } from "src/auth/auth-providers/auth.service";
+// import { AuthService } from "src/auth/auth-providers/auth.service";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -82,7 +86,7 @@ export class UserService {
    * @param where: FindOptionsWhere
    * @returns User
    */
-  async findOneBy(where: FindOptionsWhere<UserFindByQuery>) {
+  async findOneBy(where: FindOptionsWhere<UserFindByQuery>): Promise<User> {
     let user: User | null = null;
     try {
       user = await this.userRepository.findOneBy(where);

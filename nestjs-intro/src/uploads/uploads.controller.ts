@@ -22,7 +22,6 @@ export class UploadsController {
   @Post("file")
   @Auth(AuthType.None)
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log("file res", file);
     return this.uploadsService.uploadFile(file);
   }
 }

@@ -1,7 +1,10 @@
-import { forwardRef, Module } from "@nestjs/common";
+import {
+  // forwardRef,
+  Module,
+} from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthModule } from "src/auth/auth.module";
+// import { AuthModule } from "src/auth/auth.module";
 import profileConfig from "src/config/profile.config";
 import { CreateManyUsersProvider } from "./user-providers/create-many.provider";
 import { CreateUserProvider } from "./user-providers/create.provider";
@@ -14,16 +17,16 @@ import { UserMgService } from "./user-providers/user.mg.service";
 import { UserMgController } from "./user.mg.controller";
 
 @Module({
-  controllers: [UserController, UserMgController],
   providers: [
     UserService,
     CreateManyUsersProvider,
     CreateUserProvider,
     UserMgService,
   ],
+  controllers: [UserController, UserMgController],
   exports: [UserService],
   imports: [
-    forwardRef(() => AuthModule),
+    // forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(profileConfig),
     MongooseModule.forFeature([{ name: UserMg.name, schema: UserMgSchema }]),

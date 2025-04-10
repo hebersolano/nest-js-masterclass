@@ -6,8 +6,8 @@ import { UploadsService } from "./uploads-providers/uploads.service";
 import { UploadsController } from "./uploads.controller";
 
 @Module({
-  controllers: [UploadsController],
-  providers: [UploadsService, UploadToAwsProvider],
   imports: [TypeOrmModule.forFeature([Upload])],
+  providers: [UploadsService, UploadToAwsProvider],
+  controllers: [UploadsController],
 })
 export class UploadsModule {}

@@ -1,7 +1,10 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { MongooseModule } from "@nestjs/mongoose";
+
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
@@ -15,14 +18,12 @@ import { MetaOptionsModule } from "./meta-options/meta-options.module";
 import { PostsModule } from "./posts/posts.module";
 import { TagsModule } from "./tags/tags.module";
 import { UserModule } from "./users/user.module";
-import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { AccessTokenGuard } from "./auth/auth-guards/access-token/access-token.guard";
 import jwtConfig from "./auth/config/jwt.config";
 import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentication.guard";
 import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
 import { UploadsModule } from "./uploads/uploads.module";
 import { MailModule } from "./mail/mail.module";
-import { MongooseModule } from "@nestjs/mongoose";
 
 const ENV = process.env.NODE_ENV;
 
@@ -42,10 +43,10 @@ const ENV = process.env.NODE_ENV;
     MongooseModule.forRoot("mongodb://localhost:27017/", {
       dbName: "nestjs-blog",
     }),
+    AuthModule,
     UploadsModule,
     UserModule,
     PostsModule,
-    AuthModule,
     TagsModule,
     MetaOptionsModule,
     HelpersModule,

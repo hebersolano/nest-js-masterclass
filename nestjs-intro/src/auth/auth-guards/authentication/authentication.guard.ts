@@ -20,12 +20,12 @@ export class AuthenticationGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // authType metadata from the reflect class
-
     let authType: AuthType | undefined;
     authType = this.reflector.getAllAndOverride<AuthType | undefined>(
       "authType",
       [context.getHandler(), context.getClass()],
     );
+
     if (!authType) authType = AuthenticationGuard.defaultAuthType;
     return await this.authTypeGuardMap[authType].canActivate(context);
   }

@@ -34,7 +34,7 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     // find the user using email
     const user = await this.usersService.findOneBy({ email: signInDto.email });
-    //TODO resolve case when user doesn't not have a password yet because it signed up with oauth
+    //TODO resolve case when user does not have a password yet because it signed up with oauth
     if (!user.password) throw new Error("User doesn't have a password yet");
     // compare password to the hash
     const isAuthenticated = await this.hashingProvider.comparePassword(

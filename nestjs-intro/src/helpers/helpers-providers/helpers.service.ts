@@ -9,8 +9,8 @@ export class HelpersService {
    * @param exceptions An array of property names (strings) that should be excluded from being copied to the target object.
    * @returns
    */
-  updateObjectFromSource<T>(
-    target: object,
+  updateObjectFromSource<T extends object>(
+    target: T,
     source: object,
     exceptions: string[],
   ): T {
@@ -22,6 +22,6 @@ export class HelpersService {
       }
     }
 
-    return target as T;
+    return target;
   }
 }

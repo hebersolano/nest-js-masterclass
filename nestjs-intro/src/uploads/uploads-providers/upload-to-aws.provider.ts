@@ -26,6 +26,11 @@ export class UploadToAwsProvider implements OnModuleInit {
     });
   }
 
+  /**
+   *
+   * @param file Multer.File
+   * @returns String, uploaded file name
+   */
   async fileUpload(file: Express.Multer.File) {
     const fileName = this.generateFileName(file);
     try {

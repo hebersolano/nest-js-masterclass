@@ -50,6 +50,7 @@ export class CreateUserProvider {
       let newUser = this.userRepository.create(createUserDto);
       newUser = await this.userRepository.save(newUser);
 
+      //TODO: mail service implementation
       // await this.mailService.sendUserWelcome(newUser);
 
       return newUser;
@@ -63,29 +64,20 @@ export class CreateUserProvider {
   }
 
   async createGoogleUser(googleUserData: GoogleUserType): Promise<User> {
-    // Check if user exist
-    let user: User | null;
     try {
-      user = await this.userRepository.findOneBy({
+      // Check if user exist
+      const user = await this.userRepository.findOneBy({
         email: googleUserData.email,
       });
-    } catch {
-      throw new RequestTimeoutException(
-        "Unable to process request at the moment, please try later",
-        { description: "Database connection error" },
-      );
-    }
-    // if user exist by email, update googleId
-    if (user) {
-      console.log("user has mail but not google id", user);
-      user.googleId = googleUserData.googleId;
-      return await this.userRepository.save(user);
-    }
-
-    // Create a new user
-    try {
-      const newUser = this.userRepository.create(googleUserData);
-      return await this.userRepository.save(newUser);
+      if (user) {
+        // if user exist by email, update googleId
+        user.googleId = googleUserData.googleId;
+        return await this.userRepository.save(user);
+      } else {
+        // create a new user
+        const newUser = this.userRepository.create(googleUserData);
+        return await this.userRepository.save(newUser);
+      }
     } catch {
       throw new RequestTimeoutException(
         "Unable to process request at the moment, please try later",
