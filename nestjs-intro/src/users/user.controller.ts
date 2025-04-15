@@ -21,6 +21,7 @@ import { PatchUserDto } from "./user-dtos/patch-user.dto";
 import { UserService } from "./user-providers/user.service";
 
 @Controller("users")
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiTags("Users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -55,6 +56,7 @@ export class UserController {
     description: "The position of the page number that you want",
     example: 10,
   })
+  // @UseInterceptors(ClassSerializerInterceptor)
   async getUser(
     @Param() param: GetUserParamDto,
     @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
@@ -65,7 +67,7 @@ export class UserController {
   }
 
   @Post()
-  @UseInterceptors(ClassSerializerInterceptor)
+  // @UseInterceptors(ClassSerializerInterceptor)
   @Auth(AuthType.None)
   async createUser(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
@@ -81,6 +83,9 @@ export class UserController {
 
   @Patch()
   updateUser(@Body() patchUserDto: PatchUserDto) {
+    //TODO update user endpoint and implementation
     return JSON.stringify(patchUserDto);
   }
+
+  //TODO delete user endpoint and implementation
 }

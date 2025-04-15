@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   // forwardRef,
   Module,
 } from "@nestjs/common";
@@ -15,6 +16,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { UserMg, UserMgSchema } from "./user.schema";
 import { UserMgService } from "./user-providers/user.mg.service";
 import { UserMgController } from "./user.mg.controller";
+import { AuthModule } from "src/auth/auth.module";
 
 @Module({
   providers: [
@@ -26,7 +28,7 @@ import { UserMgController } from "./user.mg.controller";
   controllers: [UserController, UserMgController],
   exports: [UserService],
   imports: [
-    // forwardRef(() => AuthModule),
+    forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(profileConfig),
     MongooseModule.forFeature([{ name: UserMg.name, schema: UserMgSchema }]),

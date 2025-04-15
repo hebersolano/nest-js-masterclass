@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   IsEmail,
   IsNotEmpty,
@@ -20,6 +21,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 
+  @Exclude()
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
     message:
       "Minimum eight characters, at least one letter, one number and one special character",
