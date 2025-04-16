@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PostType, Status } from "../posts-types/create-post.enum";
-import { User } from "src/users/user.entity";
+import { User } from "src/users/user-entities/user.entity";
 import { Tag } from "src/tags/tags-entities/tag.entity";
 
 @Entity()

@@ -4,7 +4,7 @@ import { CreateManyUsersProvider } from "./create-many.provider";
 import { CreateUserProvider } from "./create.provider";
 import { DataSource } from "typeorm";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { User } from "../user.entity";
+import { User } from "../user-entities/user.entity";
 
 const mockCreateUserProvider: Partial<CreateUserProvider> = {
   createUser(createUserDto) {

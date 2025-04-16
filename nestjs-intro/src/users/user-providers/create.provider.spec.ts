@@ -4,7 +4,7 @@ import { MailService } from "src/mail/mail-providers/mail.service";
 import { HashingProvider } from "src/auth/auth-providers/hashing.provider";
 import { DataSource, ObjectLiteral, Repository } from "typeorm";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { User } from "../user.entity";
+import { User } from "../user-entities/user.entity";
 import { BadRequestException } from "@nestjs/common";
 
 const user = {

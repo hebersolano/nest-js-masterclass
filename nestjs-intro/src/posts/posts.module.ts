@@ -7,11 +7,13 @@ import { PostsService } from "./posts-providers/posts.service";
 import { PostsController } from "./posts.controller";
 import { TagsModule } from "src/tags/tags.module";
 import { MongooseModule } from "@nestjs/mongoose";
-import { PostMg, PostMgSchema } from "./post.schema";
+import { PostMgController } from "./post.mg.controller";
+import { PostMgService } from "./posts-providers/post.mg.service";
+import { PostMg, PostMgSchema } from "./post-entities/post.schema";
 
 @Module({
-  providers: [PostsService],
-  controllers: [PostsController],
+  providers: [PostsService, PostMgService],
+  controllers: [PostsController, PostMgController],
   imports: [
     UserModule,
     TagsModule,

@@ -12,7 +12,7 @@ import { OAuth2Client } from "google-auth-library";
 import { TokenProvider } from "src/auth/auth-providers/token.provider";
 import jwtConfig from "src/auth/config/jwt.config";
 import { UserService } from "src/users/user-providers/user.service";
-import { User } from "src/users/user.entity";
+import { User } from "src/users/user-entities/user.entity";
 import { GoogleUserType } from "src/users/users-types/google-user.type";
 import { GoogleTokenDto } from "../../social-dtos/google-token.dto";
 

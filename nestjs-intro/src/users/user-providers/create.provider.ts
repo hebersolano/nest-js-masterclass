@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "../user-dtos/create-user.dto";
-import { User } from "../user.entity";
+import { User } from "../user-entities/user.entity";
 import { HashingProvider } from "src/auth/auth-providers/hashing.provider";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GoogleUserType } from "../users-types/google-user.type";
