@@ -28,6 +28,4 @@ export class UserMg extends Document {
   password: string;
 }
 
-console.log(">>> user document name", UserMg.name);
-
 export const UserMgSchema = SchemaFactory.createForClass(UserMg);

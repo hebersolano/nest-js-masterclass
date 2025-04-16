@@ -23,11 +23,13 @@
 
 - `@Param('optional', new OptionalPipe(ParseIntPipe)) optional?: number,` optional parameter
 
-Request Response Lifecycle
-Request > Middleware >
-*filter start >
-Guards > Interceptors > Pipes > Controller > Interceptors >
-*filters end >
+Request Response Lifecycle:
+Request > [Middleware](https://docs.nestjs.com/middleware) >
+_filter start_ >
+[Guards](https://docs.nestjs.com/guards) >
+[Interceptors](https://docs.nestjs.com/interceptors) >
+Pipes > Controller > Interceptors >
+_filters end_ >
 Response
 
 ## Pipes
