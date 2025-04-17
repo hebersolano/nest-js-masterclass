@@ -6,19 +6,25 @@ import { Post } from "./post-entities/post.entity";
 import { PostsService } from "./posts-providers/posts.service";
 import { PostsController } from "./posts.controller";
 import { TagsModule } from "src/tags/tags.module";
-import { MongooseModule } from "@nestjs/mongoose";
-import { PostMgController } from "./post.mg.controller";
-import { PostMgService } from "./posts-providers/post.mg.service";
-import { PostMg, PostMgSchema } from "./post-entities/post.schema";
+// import { MongooseModule } from "@nestjs/mongoose";
+// import { PostMgController } from "./post.mg.controller";
+// import { PostMgService } from "./posts-providers/post.mg.service";
+// import { PostMg, PostMgSchema } from "./post-entities/post.schema";
 
 @Module({
-  providers: [PostsService, PostMgService],
-  controllers: [PostsController, PostMgController],
+  providers: [
+    PostsService,
+    // PostMgService
+  ],
+  controllers: [
+    PostsController,
+    // PostMgController
+  ],
   imports: [
     UserModule,
     TagsModule,
     TypeOrmModule.forFeature([Post, MetaOption]),
-    MongooseModule.forFeature([{ name: PostMg.name, schema: PostMgSchema }]),
+    // MongooseModule.forFeature([{ name: PostMg.name, schema: PostMgSchema }]),
   ],
 })
 export class PostsModule {}

@@ -3,7 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
-import { MongooseModule } from "@nestjs/mongoose";
+// import { MongooseModule } from "@nestjs/mongoose";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -40,9 +40,9 @@ const ENV = process.env.NODE_ENV;
       global: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmOptions),
-    MongooseModule.forRoot("mongodb://localhost:27017/", {
-      dbName: "nestjs-blog",
-    }),
+    // MongooseModule.forRoot("mongodb://localhost:27017/", {
+    //   dbName: "nestjs-blog",
+    // }),
     AuthModule,
     UserModule,
     PostsModule,
