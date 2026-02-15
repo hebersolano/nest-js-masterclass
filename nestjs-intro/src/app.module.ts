@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
@@ -24,6 +24,7 @@ import { AuthenticationGuard } from "./auth/auth-guards/authentication/authentic
 import { DataResponseInterceptor } from "./common/interceptors/data-response/data-response.interceptor";
 import { UploadsModule } from "./uploads/uploads.module";
 import { MailModule } from "./mail/mail.module";
+import { LoggerMiddleware } from "./logger/logger.middleware";
 
 const ENV = process.env.NODE_ENV;
 
@@ -61,4 +62,8 @@ const ENV = process.env.NODE_ENV;
     AccessTokenGuard,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes("/");
+  }
+}

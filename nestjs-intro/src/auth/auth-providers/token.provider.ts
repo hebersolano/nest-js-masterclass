@@ -77,9 +77,6 @@ export class TokenProvider {
         },
         {
           secret: this.jwtConfiguration.secret,
-          issuer: this.jwtConfiguration.issuer,
-          audience: this.jwtConfiguration.audience,
-          expiresIn,
         },
       );
 
