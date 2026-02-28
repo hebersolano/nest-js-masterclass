@@ -62,3 +62,10 @@ Website > cloud Front (CDN) > S3 Storage
 
 - Jest testing
 - E2E testing
+
+# Deployment
+
+## Tools
+
+- nginx
+- pm2

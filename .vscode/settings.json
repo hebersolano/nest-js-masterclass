@@ -2,5 +2,25 @@
   "cSpell.words": [
     "abaeilable",
     "Usermg"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#0067cc",
+    "activityBar.background": "#0067cc",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#ff80c0",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#0067cc",
+    "statusBar.background": "#004d99",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#0067cc",
+    "statusBarItem.remoteBackground": "#004d99",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#004d99",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#004d9999",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#004D99"
 }

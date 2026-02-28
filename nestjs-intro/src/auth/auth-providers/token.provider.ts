@@ -27,8 +27,6 @@ export class TokenProvider {
     try {
       return await this.jwtService.verifyAsync<T>(token, {
         secret: this.jwtConfiguration.secret,
-        issuer: this.jwtConfiguration.issuer,
-        audience: this.jwtConfiguration.audience,
       });
     } catch {
       throw new UnauthorizedException();

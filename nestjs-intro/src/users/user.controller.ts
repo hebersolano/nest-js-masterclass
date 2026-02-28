@@ -27,6 +27,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  // @Auth(AuthType.None)
   async getUsers(
     @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query("page", new DefaultValuePipe(1), ParseIntPipe) page: number,
